@@ -8,7 +8,7 @@ namespace Auction.Domain.Entities
         public decimal StartPrice { get; set; }
         public decimal CurrentBid { get; set; }
         public bool Sold { get; set; }
-        public int BidsCount { get; set; }
+        public int BidsCount => Bids.Count;
 
         public ICollection<Bid> Bids { get; set; }
 
