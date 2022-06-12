@@ -1,6 +1,5 @@
 ﻿using Auction.Domain.Entities.Base;
 using System;
-using System.Collections.Generic;
 
 namespace Auction.Domain.Entities
 {
