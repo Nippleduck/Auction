@@ -10,7 +10,8 @@ namespace Auction.Domain.Entities
         public string Description { get; set; }
         public DateTime OpenDate { get; set; }
         public DateTime CloseDate { get; set; }
-        public ReviewDetails ReviewDetails { get; set; }    
+        public ReviewDetails ReviewDetails { get; set; }
+        public decimal StartPrice { get; set; }
         public BiddingDetails BiddingDetails { get; set; }
 
         public int CategoryId { get; set; }

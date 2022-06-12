@@ -5,7 +5,6 @@ namespace Auction.Domain.Entities
 {
     public class BiddingDetails
     {
-        public decimal StartPrice { get; set; }
         public decimal CurrentBid { get; set; }
         public bool Sold { get; set; }
         public int BidsCount => Bids.Count;
