@@ -10,6 +10,7 @@ namespace Auction.Data.Context
         public AuctionContext(DbContextOptions<AuctionContext> options) : base(options) { }
 
         public DbSet<Lot> Lots { get; set; }
+        public DbSet<ReviewDetails> Reviews { get; set; }
         public DbSet<BiddingDetails> BiddingDetails { get; set; }
         public DbSet<Bid> Bids { get; set; }
         public DbSet<Person> Persons { get; set; }
