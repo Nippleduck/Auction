@@ -2,7 +2,7 @@
 
 namespace Auction.Data.Identity
 {
-    internal class UserCredentials : IdentityUser
+    public class ApplicationUser : IdentityUser
     {
         public int PersonId { get; set; }
     }

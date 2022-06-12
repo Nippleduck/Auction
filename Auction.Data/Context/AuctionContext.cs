@@ -5,9 +5,9 @@ using Auction.Domain.Entities;
 
 namespace Auction.Data.Context
 {
-    public class AuctionContext : DbContext
+    public class AuctionContext : IdentityDbContext<ApplicationUser>
     {
-        public AuctionContext(DbContextOptions options) : base(options) { }
+        public AuctionContext(DbContextOptions<AuctionContext> options) : base(options) { }
 
         public DbSet<Lot> Lots { get; set; }
         public DbSet<BiddingDetails> BiddingDetails { get; set; }
