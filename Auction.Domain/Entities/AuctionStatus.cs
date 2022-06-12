@@ -2,7 +2,7 @@
 
 namespace Auction.Domain.Entities
 {
-    public class Status : BaseEntity
+    public class AuctionStatus : BaseEntity
     {
         public string Name { get; set; }    
     }

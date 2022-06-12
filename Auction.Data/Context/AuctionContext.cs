@@ -13,7 +13,7 @@ namespace Auction.Data.Context
         public DbSet<BiddingDetails> BiddingDetails { get; set; }
         public DbSet<Bid> Bids { get; set; }
         public DbSet<Person> Persons { get; set; }
-        public DbSet<Status> Statuses { get; set; }
+        public DbSet<AuctionStatus> Statuses { get; set; }
         public DbSet<Category> Categories { get; set; }
     }
 }
