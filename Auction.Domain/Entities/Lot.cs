@@ -19,6 +19,6 @@ namespace Auction.Domain.Entities
         public Status Status { get; set; }
 
         public int SellerId { get; set; }
-        public User Seller { get; set; }
+        public Person Seller { get; set; }
     }
 }

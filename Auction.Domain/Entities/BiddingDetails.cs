@@ -16,6 +16,6 @@ namespace Auction.Domain.Entities
         public Lot Lot { get; set; }
 
         public int HighestBidderId { get; set; }
-        public User HighestBidder { get; set; }
+        public Person HighestBidder { get; set; }
     }
 }

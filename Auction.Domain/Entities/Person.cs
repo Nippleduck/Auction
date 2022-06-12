@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Auction.Domain.Entities
 {
-    public class User : BaseEntity
+    public class Person : BaseEntity
     {
         public string Name { get; set; }    
         public string Surname { get; set; }

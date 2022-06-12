@@ -9,7 +9,7 @@ namespace Auction.Domain.Entities
         public DateTime PlacedOn { get; set; }
 
         public int BidderId { get; set; }
-        public User Bidder { get; set; }
+        public Person Bidder { get; set; }
 
         public int LotId { get; set; }
         public Lot Lot { get; set; }    
