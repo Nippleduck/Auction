@@ -1,4 +1,5 @@
 ﻿using Auction.Domain.Entities.Base;
+using System;
 using System.Collections.Generic;
 
 namespace Auction.Domain.Entities
@@ -7,9 +8,10 @@ namespace Auction.Domain.Entities
     {
         public string Name { get; set; }    
         public string Surname { get; set; }
+        public DateTime BirthDate { get; set; }
         
         public ICollection<Lot> OwnedLots { get; set; }
-
         public ICollection<Lot> PurchasedLots { get; set; }
+        public ICollection<Bid> Bids { get; set; }
     }
 }
