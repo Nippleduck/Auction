@@ -23,5 +23,8 @@ namespace Auction.Domain.Entities
 
         public int SellerId { get; set; }
         public Person Seller { get; set; }
+
+        public int BuyerId { get; set; }
+        public Person Buyer { get; set; }
     }
 }

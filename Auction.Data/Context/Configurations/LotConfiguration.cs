@@ -25,6 +25,10 @@ namespace Auction.Data.Context.Configurations
                 .WithMany(p => p.OwnedLots)
                 .IsRequired();
 
+            builder.
+                HasOne(l => l.Buyer)
+                .WithMany(p => p.PurchasedLots);
+
             builder
                 .HasOne(l => l.Category)
                 .WithMany();
