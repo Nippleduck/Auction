@@ -1,5 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Threading.Tasks;
 
 namespace Auction.Authentication.JWT.ConfigurationModels
 {
@@ -13,5 +14,7 @@ namespace Auction.Authentication.JWT.ConfigurationModels
         public DateTime IssuedAt => DateTime.UtcNow;
         public TimeSpan ValidFor { get; set; } = TimeSpan.FromMinutes(120);
         public SigningCredentials SigningCredentials { get; set; }
+
+        public Func<Task<string>> GenerateJti => () => Task.FromResult(Guid.NewGuid().ToString());
     }
 }
