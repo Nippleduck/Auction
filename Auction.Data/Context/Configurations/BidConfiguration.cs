@@ -13,6 +13,10 @@ namespace Auction.Data.Context.Configurations
                 .WithMany(p => p.Bids)
                 .HasForeignKey(b => b.BidderId);
 
+            builder.HasOne(b => b.BiddingDetails)
+                .WithMany(bd => bd.Bids)
+                .HasForeignKey(b => b.BiddingDetailsId);
+
             builder
                 .Property(b => b.Price)
                 .IsRequired();
