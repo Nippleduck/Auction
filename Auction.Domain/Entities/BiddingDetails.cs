@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Auction.Domain.Entities.Base;
+using System.Collections.Generic;
 
 namespace Auction.Domain.Entities
 {
-    public class BiddingDetails
+    public class BiddingDetails : BaseEntity
     {
         public decimal CurrentBid { get; set; }
         public bool Sold { get; set; }
