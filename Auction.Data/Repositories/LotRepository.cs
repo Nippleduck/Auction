@@ -25,6 +25,12 @@ namespace Auction.Data.Repositories
                 .ThenInclude(bd => bd.Bids)
                 .FirstOrDefaultAsync(lot => lot.Id == id, ct);
 
+        public async Task<Lot> GetByNameAsync(string name, CancellationToken ct) =>
+            await context.Lots  
+                .Include(lot => lot.Category)
+                .Include(lot => lot.Status)
+                .FirstOrDefaultAsync(lot => lot.Name == name, ct);
+
         public async Task<IEnumerable<Lot>> GetAllAvailableForSaleAsync(CancellationToken ct) =>
             await context.Lots
                 .AsNoTracking()
