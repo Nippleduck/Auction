@@ -35,11 +35,11 @@ namespace Auction.Data.Context.Configurations
 
             builder
                 .HasOne(l => l.Category)
-                .WithMany();
+                .WithMany(c => c.Lots);
 
             builder
                 .HasOne(l => l.Status)
-                .WithMany();
+                .WithMany(s => s.Lots);
 
             builder
                 .Property(l => l.Name)
