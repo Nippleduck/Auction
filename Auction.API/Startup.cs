@@ -1,3 +1,4 @@
+using Auction.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +27,8 @@ namespace Auction.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddData(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

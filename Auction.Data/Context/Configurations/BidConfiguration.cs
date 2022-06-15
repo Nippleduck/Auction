@@ -19,6 +19,7 @@ namespace Auction.Data.Context.Configurations
 
             builder
                 .Property(b => b.Price)
+                .HasColumnType("decimal(10, 2)")
                 .IsRequired();
 
             builder

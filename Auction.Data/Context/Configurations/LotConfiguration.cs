@@ -41,6 +41,11 @@ namespace Auction.Data.Context.Configurations
                 .Property(l => l.Name)
                 .HasMaxLength(200)
                 .IsRequired();
+
+            builder
+                .Property(lot => lot.StartPrice)
+                .HasColumnType("decimal(10,2)")
+                .IsRequired();
         }
     }
 }
