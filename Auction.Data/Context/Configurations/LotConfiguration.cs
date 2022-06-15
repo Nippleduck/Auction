@@ -23,11 +23,15 @@ namespace Auction.Data.Context.Configurations
             builder
                 .HasOne(l => l.Seller)
                 .WithMany(p => p.OwnedLots)
-                .IsRequired();
+                .HasForeignKey(l => l.SellerId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.
                 HasOne(l => l.Buyer)
-                .WithMany(p => p.PurchasedLots);
+                .WithMany(p => p.PurchasedLots)
+                .HasForeignKey(l => l.BuyerId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder
                 .HasOne(l => l.Category)
