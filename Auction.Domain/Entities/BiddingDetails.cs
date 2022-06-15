@@ -6,6 +6,7 @@ namespace Auction.Domain.Entities
     public class BiddingDetails : BaseEntity
     {
         public decimal CurrentBid { get; set; }
+        public decimal MinimalBid { get; set; }
         public bool Sold { get; set; }
         public int BidsCount => Bids.Count;
 

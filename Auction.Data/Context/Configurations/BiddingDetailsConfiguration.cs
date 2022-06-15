@@ -11,6 +11,10 @@ namespace Auction.Data.Context.Configurations
             builder
                 .Property(bd => bd.CurrentBid)
                 .HasColumnType("decimal(10, 2)");
+
+            builder
+                .Property(bd => bd.MinimalBid)
+                .HasColumnType("decimal(10, 2)");
         }
     }
 }
