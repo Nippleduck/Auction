@@ -8,13 +8,15 @@ namespace Auction.Data.Tests
 {
     internal static class TestDbContextProvider
     {
-        public static DbContextOptions GetTestDbOptions()
+        public static AuctionContext CreateContext() => new AuctionContext(GetDbOptions());
+
+        public static DbContextOptions<AuctionContext> GetDbOptions()
         {
             var options = new DbContextOptionsBuilder<AuctionContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
-            using var context = new AuctionContext();
+            using var context = new AuctionContext(options);
 
             SeedContext(context);
 
@@ -51,7 +53,7 @@ namespace Auction.Data.Tests
 
             context.Lots.AddRange(new Lot[]
                 {
-                    new Lot { Id = 1, Name = "Emerald ring", CategoryId = 2, SellerId = 1, StartPrice = 1200, StatusId = 1, OpenDate = DateTime.UtcNow, CloseDate = DateTime.UtcNow.AddDays(10) },
+                    new Lot { Id = 1, Name = "Emerald ring", CategoryId = 2, SellerId = 1, StartPrice = 1200, StatusId = 1, OpenDate = new DateTime(2022, 6, 16), CloseDate = new DateTime(2022, 6, 26) },
                     new Lot { Id = 2, Name = "Landscape painting", CategoryId = 3, SellerId = 1, BuyerId = 3, StartPrice = 500, StatusId = 2, OpenDate = new DateTime(2021, 1, 11), CloseDate = new DateTime(2021, 3, 11) },
                     new Lot { Id = 3, Name = "Leather Jacket", CategoryId = 1, SellerId = 2, StartPrice = 200, StatusId = 3, OpenDate = new DateTime(2022, 1, 1), CloseDate = new DateTime(2022, 1, 11)},
                     new Lot { Id = 4, Name = "War and Peace First Edition", CategoryId = 7, SellerId = 2, StatusId = 4, StartPrice = 350}
@@ -77,6 +79,8 @@ namespace Auction.Data.Tests
                     new ReviewDetails { Id = 3, LotId = 3, Status = ReviewStatus.Allowed },
                     new ReviewDetails { Id = 4, LotId = 4, Status = ReviewStatus.PendingReview}
                 });
+
+            context.SaveChanges();
         }
     }
 }

@@ -8,7 +8,6 @@ namespace Auction.Data.Context
 {
     public class AuctionContext : IdentityDbContext<ApplicationUser>
     {
-        public AuctionContext() { }
         public AuctionContext(DbContextOptions<AuctionContext> options) : base(options) { }
 
         public DbSet<Lot> Lots { get; set; }
