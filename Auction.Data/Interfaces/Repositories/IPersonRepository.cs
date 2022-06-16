@@ -2,7 +2,5 @@
 
 namespace Auction.Data.Interfaces.Repositories
 {
-    public interface IPersonRepository : IRepository<Person, int>
-    {
-    }
+    public interface IPersonRepository : IRepository<Person, int> { }
 }

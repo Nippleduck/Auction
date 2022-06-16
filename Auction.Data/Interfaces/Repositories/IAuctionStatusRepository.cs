@@ -2,8 +2,5 @@
 
 namespace Auction.Data.Interfaces.Repositories
 {
-    public interface IAuctionStatusRepository : IRepository<AuctionStatus, int>
-    {
-
-    }
+    public interface IAuctionStatusRepository : IRepository<AuctionStatus, int> { }
 }

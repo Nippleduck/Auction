@@ -14,17 +14,6 @@ namespace Auction.Data.Repositories
     {
         public LotRepository(AuctionContext context) : base(context) { }
 
-        public async Task<Lot> GetByIdWithDetailsAsync(int id, CancellationToken ct) =>
-            await context.Lots
-                .Include(lot => lot.Category)
-                .Include(lot => lot.Status)
-                .Include(lot => lot.Seller)
-                .Include(lot => lot.Buyer)
-                .Include(lot => lot.ReviewDetails)
-                .Include(lot => lot.BiddingDetails)
-                .ThenInclude(bd => bd.Bids)
-                .FirstOrDefaultAsync(lot => lot.Id == id, ct);
-
         public async Task<Lot> GetByNameAsync(string name, CancellationToken ct) =>
             await context.Lots  
                 .Include(lot => lot.Category)
@@ -82,5 +71,28 @@ namespace Auction.Data.Repositories
                 .Include(lot => lot.ReviewDetails)
                 .Where(lot => lot.SellerId == userId)
                 .ToListAsync(ct);
+
+        public override async Task<Lot> GetByIdWithDetailsAsync(int id, CancellationToken ct = default) =>
+            await context.Lots
+                .Include(lot => lot.Category)
+                .Include(lot => lot.Status)
+                .Include(lot => lot.Seller)
+                .Include(lot => lot.Buyer)
+                .Include(lot => lot.ReviewDetails)
+                .Include(lot => lot.BiddingDetails)
+                .ThenInclude(bd => bd.Bids)
+                .FirstOrDefaultAsync(lot => lot.Id == id, ct);
+
+        public override async Task<IEnumerable<Lot>> GetAllWithDetailsAsync(CancellationToken ct = default) =>
+            await context.Lots
+                .AsNoTracking()
+                .Include(lot => lot.Category)
+                .Include(lot => lot.Status)
+                .Include(lot => lot.Seller)
+                .Include(lot => lot.Buyer)
+                .Include(lot => lot.ReviewDetails)
+                .Include(lot => lot.BiddingDetails)
+                .ThenInclude(bd => bd.Bids)
+                .ToListAsync(ct);   
     }
 }

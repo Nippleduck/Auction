@@ -12,14 +12,14 @@ namespace Auction.Data.Repositories
     {
         public PersonRepository(AuctionContext context) : base(context) { }
 
-        public async Task<Person> GetByIdWithDetailsAsync(int id, CancellationToken ct) =>
+        public override async Task<Person> GetByIdWithDetailsAsync(int id, CancellationToken ct = default) =>
             await context.Persons
                 .Include(p => p.Bids)
                 .Include(p => p.PurchasedLots)
                 .Include(p => p.OwnedLots)
                 .FirstOrDefaultAsync(p => p.Id == id, ct);
 
-        public async Task<IEnumerable<Person>> GetAllWithDetailsAsync(CancellationToken ct) =>
+        public override async Task<IEnumerable<Person>> GetAllWithDetailsAsync(CancellationToken ct = default) =>
             await context.Persons
                 .AsNoTracking()
                 .Include(p => p.Bids)

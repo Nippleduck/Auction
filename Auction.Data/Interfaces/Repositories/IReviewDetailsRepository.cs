@@ -2,7 +2,5 @@
 
 namespace Auction.Data.Interfaces.Repositories
 {
-    public interface IReviewDetailsRepository : IRepository<ReviewDetails, int>
-    {
-    }
+    public interface IReviewDetailsRepository : IRepository<ReviewDetails, int> { }
 }

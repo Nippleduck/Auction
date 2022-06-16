@@ -9,6 +9,8 @@ namespace Auction.Data.Interfaces.Repositories
     {
         Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken ct = default);
         Task<TEntity> GetByIdAsync(TId id, CancellationToken ct = default);
+        Task<TEntity> GetByIdWithDetailsAsync(TId id, CancellationToken ct = default);
+        Task<IEnumerable<TEntity>> GetAllWithDetailsAsync(CancellationToken ct = default);
         Task AddAsync(TEntity entity, CancellationToken ct = default);
         Task DeleteByIdAsync(TId id, CancellationToken ct = default);
         void Delete(TEntity entity);

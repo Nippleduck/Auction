@@ -34,5 +34,9 @@ namespace Auction.Data.Repositories
         public void Delete(TEntity entity) => context.Set<TEntity>().Remove(entity);
 
         public void Update(TEntity entity) => context.Entry(entity).State = EntityState.Modified;
+
+        public abstract Task<TEntity> GetByIdWithDetailsAsync(int id, CancellationToken ct = default);
+
+        public abstract Task<IEnumerable<TEntity>> GetAllWithDetailsAsync(CancellationToken ct = default);
     }
 }

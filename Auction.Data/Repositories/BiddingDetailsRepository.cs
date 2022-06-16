@@ -12,13 +12,13 @@ namespace Auction.Data.Repositories
     {
         public BiddingDetailsRepository(AuctionContext context) : base(context) { }
 
-        public async Task<BiddingDetails> GetByIdWithDetailsAsync(int id, CancellationToken ct) =>
+        public override async Task<BiddingDetails> GetByIdWithDetailsAsync(int id, CancellationToken ct = default) =>
             await context.BiddingDetails
                 .Include(bd => bd.Bids)
                 .ThenInclude(bid => bid.Bidder)
                 .FirstOrDefaultAsync(bid => bid.Id == id, ct);
 
-        public async Task<IEnumerable<BiddingDetails>> GetAllWithDetailsAsync(CancellationToken ct) =>
+        public override async Task<IEnumerable<BiddingDetails>> GetAllWithDetailsAsync(CancellationToken ct = default) =>
             await context.BiddingDetails
                 .AsNoTracking()
                 .Include(bd => bd.Bids)
