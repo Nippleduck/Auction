@@ -13,7 +13,7 @@ namespace Auction.Data.Tests.RepositoriesTests
     {
         [TestCase(1)]
         [TestCase(2)]
-        public async Task GetByIdAsync_ShouldReturnSingleStatus(int id)
+        public async Task GetByIdAsync_ShouldReturnSingleCategory(int id)
         {
             using var context = TestDbContextProvider.CreateContext();
 
@@ -28,7 +28,7 @@ namespace Auction.Data.Tests.RepositoriesTests
         }
 
         [Test]
-        public async Task GetAllAsync_ShouldReturnAllStatuses()
+        public async Task GetAllAsync_ShouldReturnAllCategories()
         {
             using var context = TestDbContextProvider.CreateContext();
 
@@ -42,7 +42,7 @@ namespace Auction.Data.Tests.RepositoriesTests
 
         [TestCase(1)]
         [TestCase(2)]
-        public async Task GetByIdWithDetailsAsync_ShouldReturnStatusWithLotsDetails(int id)
+        public async Task GetByIdWithDetailsAsync_ShouldReturnCategoryWithDetails(int id)
         {
             using var context = TestDbContextProvider.CreateContext();
 
@@ -62,7 +62,7 @@ namespace Auction.Data.Tests.RepositoriesTests
         }
 
         [Test]
-        public async Task GetAllWithDetailsAsync_ShouldReturnStatusesWithLots()
+        public async Task GetAllWithDetailsAsync_ShouldReturnCategoriesWithDetails()
         {
             using var context = TestDbContextProvider.CreateContext();
 
@@ -79,7 +79,7 @@ namespace Auction.Data.Tests.RepositoriesTests
         }
 
         [Test]
-        public async Task AddAsync_ShouldReturnExpectedStatusesCount()
+        public async Task AddAsync_ShouldReturnExpectedCategoriesCount()
         {
             using var context = TestDbContextProvider.CreateContext();
             var repository = new CategoryRepository(context);
@@ -94,7 +94,7 @@ namespace Auction.Data.Tests.RepositoriesTests
         }
 
         [Test]
-        public async Task DeleteByIdAsync_ShouldRemoveStatus()
+        public async Task DeleteByIdAsync_ShouldRemoveCategory()
         {
             using var context = TestDbContextProvider.CreateContext();
             var repository = new CategoryRepository(context);
@@ -107,7 +107,7 @@ namespace Auction.Data.Tests.RepositoriesTests
         }
 
         [Test]
-        public async Task Delete_ShouldRemoveStatus()
+        public async Task Delete_ShouldRemoveCategory()
         {
             using var context = TestDbContextProvider.CreateContext();
             var repository = new CategoryRepository(context);
@@ -122,7 +122,7 @@ namespace Auction.Data.Tests.RepositoriesTests
         }
 
         [Test]
-        public async Task Update_ShouldUpdateEntity()
+        public async Task Update_ShouldUpdateCategory()
         {
             using var context = TestDbContextProvider.CreateContext();
             var repository = new CategoryRepository(context);

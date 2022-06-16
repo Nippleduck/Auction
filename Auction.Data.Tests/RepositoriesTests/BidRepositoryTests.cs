@@ -13,7 +13,7 @@ namespace Auction.Data.Tests.RepositoriesTests
     {
         [TestCase(1)]
         [TestCase(2)]
-        public async Task GetByIdAsync_ShouldReturnSingleStatus(int id)
+        public async Task GetByIdAsync_ShouldReturnSingleBid(int id)
         {
             using var context = TestDbContextProvider.CreateContext();
 
@@ -28,7 +28,7 @@ namespace Auction.Data.Tests.RepositoriesTests
         }
 
         [Test]
-        public async Task GetAllAsync_ShouldReturnAllStatuses()
+        public async Task GetAllAsync_ShouldReturnAllBids()
         {
             using var context = TestDbContextProvider.CreateContext();
 
@@ -42,7 +42,7 @@ namespace Auction.Data.Tests.RepositoriesTests
 
         [TestCase(1)]
         [TestCase(2)]
-        public async Task GetByIdWithDetailsAsync_ShouldReturnStatusWithLotsDetails(int id)
+        public async Task GetByIdWithDetailsAsync_ShouldReturnBidWithDetails(int id)
         {
             using var context = TestDbContextProvider.CreateContext();
 
@@ -67,7 +67,7 @@ namespace Auction.Data.Tests.RepositoriesTests
         }
 
         [Test]
-        public async Task GetAllWithDetailsAsync_ShouldReturnStatusesWithLots()
+        public async Task GetAllWithDetailsAsync_ShouldReturnBidsWithDetails()
         {
             using var context = TestDbContextProvider.CreateContext();
 
@@ -88,7 +88,7 @@ namespace Auction.Data.Tests.RepositoriesTests
         }
 
         [Test]
-        public async Task AddAsync_ShouldReturnExpectedStatusesCount()
+        public async Task AddAsync_ShouldReturnExpectedBidsCount()
         {
             using var context = TestDbContextProvider.CreateContext();
             var repository = new BidRepository(context);
@@ -103,7 +103,7 @@ namespace Auction.Data.Tests.RepositoriesTests
         }
 
         [Test]
-        public async Task DeleteByIdAsync_ShouldRemoveStatus()
+        public async Task DeleteByIdAsync_ShouldRemoveBid()
         {
             using var context = TestDbContextProvider.CreateContext();
             var repository = new BidRepository(context);
@@ -116,7 +116,7 @@ namespace Auction.Data.Tests.RepositoriesTests
         }
 
         [Test]
-        public async Task Delete_ShouldRemoveStatus()
+        public async Task Delete_ShouldRemoveBid()
         {
             using var context = TestDbContextProvider.CreateContext();
             var repository = new BidRepository(context);
@@ -131,7 +131,7 @@ namespace Auction.Data.Tests.RepositoriesTests
         }
 
         [Test]
-        public async Task Update_ShouldUpdateEntity()
+        public async Task Update_ShouldUpdateBid()
         {
             using var context = TestDbContextProvider.CreateContext();
             var repository = new BidRepository(context);
