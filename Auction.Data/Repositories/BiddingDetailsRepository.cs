@@ -16,6 +16,7 @@ namespace Auction.Data.Repositories
             await context.BiddingDetails
                 .Include(bd => bd.Bids)
                 .ThenInclude(bid => bid.Bidder)
+                .Include(bd => bd.Lot)
                 .FirstOrDefaultAsync(bid => bid.Id == id, ct);
 
         public override async Task<IEnumerable<BiddingDetails>> GetAllWithDetailsAsync(CancellationToken ct = default) =>
@@ -23,6 +24,7 @@ namespace Auction.Data.Repositories
                 .AsNoTracking()
                 .Include(bd => bd.Bids)
                 .ThenInclude(bid => bid.Bidder)
+                .Include(bd => bd.Lot)
                 .ToListAsync(ct);
     }
 }
