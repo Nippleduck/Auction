@@ -27,8 +27,8 @@ namespace Auction.Data.Context.Configurations
                 .IsRequired()
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.
-                HasOne(l => l.Buyer)
+            builder
+                .HasOne(l => l.Buyer)
                 .WithMany(p => p.PurchasedLots)
                 .HasForeignKey(l => l.BuyerId)
                 .OnDelete(DeleteBehavior.NoAction);
