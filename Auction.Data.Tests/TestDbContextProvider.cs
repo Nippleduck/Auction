@@ -1,8 +1,12 @@
 ﻿using Auction.Data.Context;
+using Auction.Data.Identity;
 using Auction.Domain.Entities;
 using Auction.Domain.Entities.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 
 namespace Auction.Data.Tests
 {
@@ -10,7 +14,7 @@ namespace Auction.Data.Tests
     {
         public static AuctionContext CreateContext() => new AuctionContext(GetDbOptions());
 
-        public static DbContextOptions<AuctionContext> GetDbOptions()
+        private static DbContextOptions<AuctionContext> GetDbOptions()
         {
             var options = new DbContextOptionsBuilder<AuctionContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
