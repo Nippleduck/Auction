@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Ardalis.Result;
 using System.Linq;
+using Auction.Domain.Entities;
 
 namespace Auction.Data.Identity
 {
@@ -53,7 +54,14 @@ namespace Auction.Data.Identity
 
             if (withSameEmail != null) return Result.Error("User with specified email exists");
 
-            var user = new ApplicationUser { Email = request.Email };
+            var person = new Person 
+            { 
+                Name = request.Name,
+                Surname = request.Surname,
+                BirthDate = request.BirthDate 
+            };
+
+            var user = new ApplicationUser { Email = request.Email, Person = person };
             var create = await userManager.CreateAsync(user, request.Password);
 
             if (!create.Succeeded) return Result.Error(create.Errors.Select(e => e.Description).ToArray());
