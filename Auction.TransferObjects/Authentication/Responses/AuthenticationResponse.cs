@@ -1,6 +1,6 @@
 ﻿using Auction.Authentication.JWT;
 
-namespace Auction.TransferObjects.Authentication.Responses
+namespace Auction.ApiModels.Authentication.Responses
 {
     public class AuthenticationResponse
     {

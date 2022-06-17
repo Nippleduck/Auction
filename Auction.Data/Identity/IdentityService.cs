@@ -1,5 +1,5 @@
-﻿using Auction.TransferObjects.Authentication.Requests;
-using Auction.TransferObjects.Authentication.Responses;
+﻿using Auction.ApiModels.Authentication.Requests;
+using Auction.ApiModels.Authentication.Responses;
 using Auction.Authentication.JWT.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
@@ -45,7 +45,7 @@ namespace Auction.Data.Identity
                 Token = token
             };
 
-            return Result.Success(response, $"user {user.Email} successfully authenticated");
+            return Result.Success(response, $"User {user.Email} successfully authenticated");
         }
 
         public async Task<Result<bool>> RegisterAsync(RegisterRequest request)
@@ -68,7 +68,7 @@ namespace Auction.Data.Identity
 
             await userManager.AddToRoleAsync(user, Roles.Customer.ToString());
 
-            return Result.Success(true, "user successfully registered");
+            return Result.Success(true, "User successfully registered");
         }
     }
 }

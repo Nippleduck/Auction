@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Auction.Authentication.JWT\Auction.Authentication.JWT.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authentication\Validators\" />
+  </ItemGroup>
+
 </Project>

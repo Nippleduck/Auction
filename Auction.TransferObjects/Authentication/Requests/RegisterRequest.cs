@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Auction.TransferObjects.Authentication.Requests
+namespace Auction.ApiModels.Authentication.Requests
 {
     public class RegisterRequest
     {

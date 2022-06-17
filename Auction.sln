@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auction.Business", "Auction
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auction.Data.Tests", "Auction.Data.Tests\Auction.Data.Tests.csproj", "{A9FFD4E8-FBD2-4827-BB1A-DB98854EC4BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auction.TransferObjects", "Auction.TransferObjects\Auction.TransferObjects.csproj", "{549BD968-661C-43DD-A5F4-0404664A6B1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auction.ApiModels", "Auction.TransferObjects\Auction.ApiModels.csproj", "{549BD968-661C-43DD-A5F4-0404664A6B1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
