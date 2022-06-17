@@ -10,6 +10,5 @@ namespace Auction.Business.Services
     {
         public LotService(IMapper mapper, IUnitOfWork uof) : base(mapper, uof) { }
 
-        public async Task<Result<>>
     }
 }
