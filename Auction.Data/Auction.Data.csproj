@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ardalis.Result" Version="4.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.25" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.25" />
@@ -24,7 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Auction.Authentication.JWT\Auction.Authentication.JWT.csproj" />
     <ProjectReference Include="..\Auction.Domain\Auction.Domain.csproj" />
+    <ProjectReference Include="..\Auction.TransferObjects\Auction.TransferObjects.csproj" />
   </ItemGroup>
 
   <ItemGroup>

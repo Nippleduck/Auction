@@ -16,7 +16,7 @@ namespace Auction.Authentication.JWT
 
         private readonly JwtIssuerOptions jwtIssuerOptions;
 
-        public async Task<AccessToken> GenerateEncodedToken(string userId, string email, string role)
+        public async Task<AccessToken> GenerateEncodedTokenAsync(string userId, string email, string role)
         {
             var claims = new[]
             {
