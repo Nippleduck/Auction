@@ -1,12 +1,8 @@
 ﻿using Auction.Data.Context;
-using Auction.Data.Identity;
 using Auction.Domain.Entities;
 using Auction.Domain.Entities.Enums;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Linq;
 
 namespace Auction.Data.Tests
 {
