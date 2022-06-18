@@ -25,9 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Auction.ApiModels\Auction.ApiModels.csproj" />
     <ProjectReference Include="..\Auction.Authentication.JWT\Auction.Authentication.JWT.csproj" />
     <ProjectReference Include="..\Auction.Domain\Auction.Domain.csproj" />
-    <ProjectReference Include="..\Auction.TransferObjects\Auction.ApiModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>
