@@ -7,12 +7,18 @@ using System.Threading;
 using Ardalis.Result;
 using System.Linq;
 using AutoMapper;
+using Auction.ApiModels.Lots.Requests;
+using Auction.Domain.Entities;
+using Auction.Business.ImageProcessing;
 
 namespace Auction.Business.Services
 {
     public class LotService : BaseService
     {
-        public LotService(IMapper mapper, IUnitOfWork uof) : base(mapper, uof) { }
+        public LotService(IMapper mapper, IUnitOfWork uof, IImageConverter imageConverter)
+            : base(mapper, uof) => this.imageConverter = imageConverter;
+
+        private readonly IImageConverter imageConverter;
 
         public async Task<Result<LotModel>> GetLotInfoByIdAsync(int id, CancellationToken ct)
         {
@@ -21,7 +27,7 @@ namespace Auction.Business.Services
             if (lotInfo == null) return Result.NotFound();
 
             var mapped = mapper.Map<LotModel>(lotInfo);
-
+            
             return Result.Success(mapped);
         }
 
@@ -48,5 +54,31 @@ namespace Auction.Business.Services
             return Result.Success(mapped);
         }
 
+        public async Task<Result<int>> CreateNewLotAsync(CreateLotRequest request, CancellationToken ct)
+        {
+            using var stream = request.Image.OpenReadStream();
+
+            var fullSize = await imageConverter.ConvertWithResizeAsync(stream, ImageSize.FullSize);
+            var thumbnail = await imageConverter.ConvertWithResizeAsync(stream, ImageSize.Thumbnail);
+
+            var image = new LotImage
+            {
+                Name = request.Image.FileName,
+                FullSize = fullSize,
+                Thumbnail = thumbnail
+            };
+
+            var lot = new Lot
+            {
+                Name = request.Name,
+                Description = request.Description,
+                StartPrice = request.StartPrice,
+                Image = image,
+            };
+
+            await uof.LotRepository.AddAsync(lot, ct);
+
+            return Result.Success(lot.Id);
+        }
     }
 }

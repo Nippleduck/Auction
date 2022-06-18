@@ -8,7 +8,6 @@ namespace Auction.Domain.Entities
         public string Type { get; set; }
         public byte[] FullSize { get; set; }
         public byte[] Thumbnail { get; set; }
-
         public int LotId { get; set; }
         public Lot Lot { get; set; }
     }
