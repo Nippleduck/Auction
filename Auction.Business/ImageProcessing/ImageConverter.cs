@@ -3,6 +3,7 @@ using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp;
 using System.Threading.Tasks;
 using System.IO;
+using Auction.Business.Interfaces;
 
 namespace Auction.Business.ImageProcessing
 {

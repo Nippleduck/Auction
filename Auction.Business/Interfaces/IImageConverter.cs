@@ -1,7 +1,8 @@
-﻿using System.IO;
+﻿using Auction.Business.ImageProcessing;
 using System.Threading.Tasks;
+using System.IO;
 
-namespace Auction.Business.ImageProcessing
+namespace Auction.Business.Interfaces
 {
     public interface IImageConverter
     {
