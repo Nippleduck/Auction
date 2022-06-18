@@ -13,8 +13,8 @@ namespace Auction.Authentication.JWT.RegistrationExtensions
     {
         public static IServiceCollection AddCustomTokenAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<IJwtFactory, JwtFactory>();
-            services.AddScoped<ITokenValidator, TokenValidator>();
+            services.AddTransient<IJwtFactory, JwtFactory>();
+            services.AddTransient<ITokenValidator, TokenValidator>();
 
             var authSettings = configuration.GetSection(nameof(ClientSecrets));
             services.Configure<ClientSecrets>(options => options.SecretKey = authSettings[nameof(ClientSecrets.SecretKey)]);
