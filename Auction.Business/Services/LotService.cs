@@ -48,6 +48,5 @@ namespace Auction.Business.Services
             return Result.Success(mapped);
         }
 
-        public async Task<Result<bool>> CreateLotAsync()
     }
 }

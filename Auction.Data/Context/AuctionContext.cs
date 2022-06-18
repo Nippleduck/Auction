@@ -17,6 +17,7 @@ namespace Auction.Data.Context
         public DbSet<Person> Persons { get; set; }
         public DbSet<AuctionStatus> Statuses { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<LotImage> Images { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
