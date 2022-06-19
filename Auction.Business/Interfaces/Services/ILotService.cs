@@ -12,7 +12,7 @@ namespace Auction.Business.Interfaces.Services
         Task<Result<IEnumerable<LotModel>>> GetForSaleAsync(CancellationToken ct);
         Task<Result<IEnumerable<LotModel>>> GetCategoryMostPopularLotsWithLimitAsync
             (int categoryId, int limit, CancellationToken ct);
-        Task<Result<int>> CreateNewLotAsync(NewLotModel request, CancellationToken ct);
+        Task<Result<int>> CreateNewLotAsync(NewLotModel model, CancellationToken ct);
         Task<Result> DeleteLotAsync(int id, CancellationToken ct);
     }
 }

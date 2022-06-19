@@ -10,7 +10,7 @@ namespace Auction.Data
 {
     public static class DependencyRegistration
     {
-        public static IServiceCollection AddData(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddDataDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<AuctionContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("AuctionDB"),
@@ -20,6 +20,7 @@ namespace Auction.Data
                 .AddEntityFrameworkStores<AuctionContext>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IdentityService>();
 
             return services;
         }

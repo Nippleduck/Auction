@@ -11,6 +11,7 @@ using System.Threading;
 using Ardalis.Result;
 using System.Linq;
 using AutoMapper;
+using System.IO;
 
 namespace Auction.Business.Services
 {

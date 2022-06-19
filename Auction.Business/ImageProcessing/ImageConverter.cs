@@ -18,6 +18,8 @@ namespace Auction.Business.ImageProcessing
     {
         public async Task<byte[]> ConvertWithResizeAsync(Stream stream, ImageSize resize = ImageSize.Initial)
         {
+            if (stream.Position != 0) stream.Seek(0, SeekOrigin.Begin);
+
             using var loaded = await Image.LoadAsync(stream);
 
             return await Resize(loaded, resize);
