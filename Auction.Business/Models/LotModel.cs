@@ -7,7 +7,6 @@ namespace Auction.Business.Models
         public int Id { get; set; } 
         public string Name { get; set; }
         public string Description { get; set; }
-        public byte[] Image { get; set; }
         public DateTime OpenDate { get; set; }
         public DateTime CloseDate { get; set; }
         public string Category { get; set; }

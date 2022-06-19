@@ -1,9 +1,8 @@
-﻿using Auction.ApiModels.Lots.Requests;
-using Auction.Business.ImageProcessing;
+﻿using Auction.Business.ImageProcessing;
 using Auction.Business.Services.Base;
 using Auction.Business.Interfaces;
-using Auction.Domain.Entities;
 using Auction.Business.Models;
+using Auction.Domain.Entities;
 using Auction.Data.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -55,9 +54,9 @@ namespace Auction.Business.Services
             return Result.Success(mapped);
         }
 
-        public async Task<Result<int>> CreateNewLotAsync(CreateLotRequest request, CancellationToken ct)
+        public async Task<Result<int>> CreateNewLotAsync(NewLotModel request, CancellationToken ct)
         {
-            using var stream = request.Image.OpenReadStream();
+            using var stream = request.Image.Content;
 
             var fullSize = await imageConverter.ConvertWithResizeAsync(stream, ImageSize.FullSize);
             var thumbnail = await imageConverter.ConvertWithResizeAsync(stream, ImageSize.Thumbnail);
@@ -65,6 +64,7 @@ namespace Auction.Business.Services
             var image = new LotImage
             {
                 Name = request.Image.FileName,
+                Type = request.Image.Type,
                 FullSize = fullSize,
                 Thumbnail = thumbnail
             };
