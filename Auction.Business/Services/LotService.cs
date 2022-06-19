@@ -1,4 +1,5 @@
-﻿using Auction.Business.ImageProcessing;
+﻿using Auction.Business.Interfaces.Services;
+using Auction.Business.ImageProcessing;
 using Auction.Business.Services.Base;
 using Auction.Business.Interfaces;
 using Auction.Business.Models;
@@ -13,7 +14,7 @@ using AutoMapper;
 
 namespace Auction.Business.Services
 {
-    public class LotService : BaseService
+    public class LotService : BaseService, ILotService
     {
         public LotService(IMapper mapper, IUnitOfWork uof, IImageConverter imageConverter)
             : base(mapper, uof) => this.imageConverter = imageConverter;
@@ -54,26 +55,26 @@ namespace Auction.Business.Services
             return Result.Success(mapped);
         }
 
-        public async Task<Result<int>> CreateNewLotAsync(NewLotModel request, CancellationToken ct)
+        public async Task<Result<int>> CreateNewLotAsync(NewLotModel model, CancellationToken ct)
         {
-            using var stream = request.Image.Content;
+            using var stream = model.Image.Content;
 
             var fullSize = await imageConverter.ConvertWithResizeAsync(stream, ImageSize.FullSize);
             var thumbnail = await imageConverter.ConvertWithResizeAsync(stream, ImageSize.Thumbnail);
 
             var image = new LotImage
             {
-                Name = request.Image.FileName,
-                Type = request.Image.Type,
+                Name = model.Image.FileName,
+                Type = model.Image.Type,
                 FullSize = fullSize,
                 Thumbnail = thumbnail
             };
 
             var lot = new Lot
             {
-                Name = request.Name,
-                Description = request.Description,
-                StartPrice = request.StartPrice,
+                Name = model.Name,
+                Description = model.Description,
+                StartPrice = model.StartPrice,
                 Image = image
             };
 
