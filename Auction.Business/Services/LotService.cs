@@ -1,4 +1,8 @@
-﻿using Auction.Business.Services.Base;
+﻿using Auction.ApiModels.Lots.Requests;
+using Auction.Business.ImageProcessing;
+using Auction.Business.Services.Base;
+using Auction.Business.Interfaces;
+using Auction.Domain.Entities;
 using Auction.Business.Models;
 using Auction.Data.Interfaces;
 using System.Collections.Generic;
@@ -7,9 +11,6 @@ using System.Threading;
 using Ardalis.Result;
 using System.Linq;
 using AutoMapper;
-using Auction.ApiModels.Lots.Requests;
-using Auction.Domain.Entities;
-using Auction.Business.ImageProcessing;
 
 namespace Auction.Business.Services
 {
@@ -73,12 +74,21 @@ namespace Auction.Business.Services
                 Name = request.Name,
                 Description = request.Description,
                 StartPrice = request.StartPrice,
-                Image = image,
+                Image = image
             };
 
             await uof.LotRepository.AddAsync(lot, ct);
+            await uof.SaveAsync(ct);
 
             return Result.Success(lot.Id);
+        }
+
+        public async Task<Result> DeleteLotAsync(int id, CancellationToken ct)
+        {
+            await uof.LotRepository.DeleteByIdAsync(id, ct);
+            await uof.SaveAsync(ct);
+
+            return Result.Success();
         }
     }
 }

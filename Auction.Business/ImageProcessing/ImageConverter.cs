@@ -1,9 +1,9 @@
 ﻿using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp;
+using Auction.Business.Interfaces;
 using System.Threading.Tasks;
 using System.IO;
-using Auction.Business.Interfaces;
 
 namespace Auction.Business.ImageProcessing
 {
