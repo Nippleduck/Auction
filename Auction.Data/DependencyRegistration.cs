@@ -1,5 +1,6 @@
 ﻿using Auction.Data.Context;
 using Auction.Data.Identity;
+using Auction.Data.ImageStore;
 using Auction.Data.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace Auction.Data
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IdentityService>();
+            services.AddTransient<ImageService>();
 
             services.AddScoped<DbContextSeeder>();
 
