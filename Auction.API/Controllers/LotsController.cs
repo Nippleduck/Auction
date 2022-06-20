@@ -2,6 +2,7 @@
 using Auction.Business.Interfaces.Services;
 using Auction.Business.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -58,6 +59,14 @@ namespace Auction.API.Controllers
             var lot = await lotService.GetLotInfoByIdAsync(id, ct);
 
             return Ok(lot.Value);
+        }
+
+        [HttpGet("sale")]
+        public async Task<ActionResult<IEnumerable<LotModel>>> GetForSaleAsync(CancellationToken ct)
+        {
+            var lots = await lotService.GetForSaleAsync(ct);
+
+            return Ok(lots.Value);
         }
     }
 }
