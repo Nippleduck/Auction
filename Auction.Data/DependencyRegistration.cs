@@ -18,7 +18,8 @@ namespace Auction.Data
                 builder => builder.MigrationsAssembly(typeof(AuctionContext).Assembly.FullName)));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<AuctionContext>();
+                .AddEntityFrameworkStores<AuctionContext>()
+                .AddDefaultTokenProviders();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IdentityService>();

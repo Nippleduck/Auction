@@ -24,9 +24,9 @@ namespace Auction.API
         {
             services.AddControllers();
 
-            services.AddCustomTokenAuthentication(Configuration);
             services.AddDataDependencies(Configuration);
             services.AddBusinessDependencies();
+            services.AddCustomTokenAuthentication(Configuration);
             services.AddApiModelsValidation();
         }
 
@@ -43,10 +43,13 @@ namespace Auction.API
                 initializer.TrySeedAsync().GetAwaiter().GetResult();
             }
 
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

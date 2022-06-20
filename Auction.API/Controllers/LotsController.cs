@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Ardalis.Result.AspNetCore;
+using Ardalis.Result;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Auction.API.Controllers
 {
@@ -12,14 +15,12 @@ namespace Auction.API.Controllers
     [ApiController]
     public class LotsController : ControllerBase
     {
-        public LotsController(ILotService lotService)
-        {
-            this.lotService = lotService;
-        }
+        public LotsController(ILotService lotService) => this.lotService = lotService;
 
         private readonly ILotService lotService;
 
         [HttpPost("{id}/create")]
+        [Authorize(Roles = "Customer,Administrator")]
         public async Task<ActionResult<int>> CreateAsync(int id, [FromForm]CreateLotRequest request, CancellationToken ct)
         {
             if (!ModelState.IsValid) return BadRequest();
@@ -46,27 +47,16 @@ namespace Auction.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteAsync(int id, CancellationToken ct)
-        {
-            await lotService.DeleteLotAsync(id, ct);
-
-            return Ok();
-        }
+        [TranslateResultToActionResult]
+        [Authorize(Roles = "Customer,Administrator")]
+        public async Task<Result> DeleteAsync(int id, CancellationToken ct) => await lotService.DeleteLotAsync(id, ct);
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<LotModel>> GetAsync(int id, CancellationToken ct)
-        {
-            var lot = await lotService.GetLotInfoByIdAsync(id, ct);
-
-            return Ok(lot.Value);
-        }
+        [TranslateResultToActionResult]
+        public async Task<LotModel> GetAsync(int id, CancellationToken ct) => await lotService.GetLotInfoByIdAsync(id, ct);
 
         [HttpGet("sale")]
-        public async Task<ActionResult<IEnumerable<LotModel>>> GetForSaleAsync(CancellationToken ct)
-        {
-            var lots = await lotService.GetForSaleAsync(ct);
-
-            return Ok(lots.Value);
-        }
+        [TranslateResultToActionResult]
+        public async Task<Result<IEnumerable<LotModel>>> GetForSaleAsync(CancellationToken ct) => await lotService.GetForSaleAsync(ct);
     }
 }

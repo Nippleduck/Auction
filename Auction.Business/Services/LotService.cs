@@ -90,7 +90,11 @@ namespace Auction.Business.Services
 
         public async Task<Result> DeleteLotAsync(int id, CancellationToken ct)
         {
-            await uof.LotRepository.DeleteByIdAsync(id, ct);
+            var lot = await uof.LotRepository.GetByIdAsync(id, ct);
+
+            if (lot == null) return Result.NotFound();
+
+            uof.LotRepository.Delete(lot);
             await uof.SaveAsync(ct);
 
             return Result.Success();
