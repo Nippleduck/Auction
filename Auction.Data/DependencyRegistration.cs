@@ -22,6 +22,8 @@ namespace Auction.Data
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IdentityService>();
 
+            services.AddScoped<DbContextSeeder>();
+
             return services;
         }
     }

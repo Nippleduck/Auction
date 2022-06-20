@@ -61,7 +61,13 @@ namespace Auction.Data.Identity
                 BirthDate = request.BirthDate 
             };
 
-            var user = new ApplicationUser { Email = request.Email, Person = person };
+            var user = new ApplicationUser 
+            { 
+                Email = request.Email,
+                UserName = $"{person.Name}{person.Surname}",
+                Person = person
+            };
+
             var create = await userManager.CreateAsync(user, request.Password);
 
             if (!create.Succeeded) return Result.Error(create.Errors.Select(e => e.Description).ToArray());
