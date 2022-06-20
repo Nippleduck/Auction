@@ -1,11 +1,13 @@
-﻿using Auction.ApiModels.Authentication.Requests;
+﻿using Auction.ApiModels.Authentication.Validators;
+using Auction.ApiModels.Authentication.Requests;
 using Auction.ApiModels.Authentication.Responses;
 using Auction.Authentication.JWT.Interfaces;
+using Auction.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
-using Ardalis.Result;
 using System.Linq;
-using Auction.Domain.Entities;
+using Ardalis.Result.FluentValidation;
+using Ardalis.Result;
 
 namespace Auction.Data.Identity
 {
@@ -50,6 +52,11 @@ namespace Auction.Data.Identity
 
         public async Task<Result<bool>> RegisterAsync(RegisterRequest request)
         {
+            var validator = new RegisterRequestValidator();
+            var result = await validator.ValidateAsync(request);
+
+            if (!result.IsValid) return Result.Invalid(result.AsErrors());
+
             var withSameEmail = await userManager.FindByEmailAsync(request.Email);
 
             if (withSameEmail != null) return Result.Error("User with specified email exists");

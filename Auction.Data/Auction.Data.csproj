@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="Ardalis.Result" Version="4.0.0" />
+    <PackageReference Include="Ardalis.Result.FluentValidation" Version="4.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.25" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.25" />
