@@ -28,6 +28,8 @@ namespace Auction.API.Controllers
                 SellerId = id,
                 Name = request.Name,
                 Description = request.Description,
+                CategoryId = request.CategoryId,
+                StatusId = request.StatusId,
                 StartPrice = request.StartPrice,
                 Image = new ImageModel
                 {

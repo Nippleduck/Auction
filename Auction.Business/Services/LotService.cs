@@ -78,6 +78,8 @@ namespace Auction.Business.Services
                 Name = model.Name,
                 Description = model.Description,
                 StartPrice = model.StartPrice,
+                CategoryId = model.CategoryId,
+                StatusId = model.StatusId,
                 Image = image,
                 ReviewDetails = new ReviewDetails()
             };

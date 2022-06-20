@@ -7,6 +7,8 @@ namespace Auction.ApiModels.Lots.Requests
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal StartPrice { get; set; }
+        public int CategoryId { get; set; }
+        public int StatusId { get; set; }
         public IFormFile Image { get; set; }
     }
 }
