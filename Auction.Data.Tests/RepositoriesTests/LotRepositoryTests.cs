@@ -55,7 +55,6 @@ namespace Auction.Data.Tests.RepositoriesTests
             var expectedCategory = ExpectedCategories.FirstOrDefault(c => c.Id == lot.CategoryId);
             var expectedStatus = ExpectedStatuses.FirstOrDefault(s => s.Id == lot.StatusId);
             var expectedSeller = ExpectedPersons.FirstOrDefault(p => p.Id == lot.SellerId);
-            var expectedBuyer = ExpectedPersons.FirstOrDefault(p => p.Id == lot.BuyerId);
 
             Assert.That(lot,
                 Is.EqualTo(expectedLot).Using(new LotEqualityComparer()),
@@ -80,10 +79,6 @@ namespace Auction.Data.Tests.RepositoriesTests
             Assert.That(lot.Seller,
                 Is.EqualTo(expectedSeller).Using(new PersonEqualityComparer()),
                 message: "Lot does not contain expected seller");
-
-            Assert.That(lot.Buyer,
-                Is.EqualTo(expectedBuyer).Using(new PersonEqualityComparer()),
-                message: "Lot does not contain expected buyer");
         }
 
         [Test]
@@ -227,7 +222,7 @@ namespace Auction.Data.Tests.RepositoriesTests
         private static readonly IEnumerable<Lot> ExpectedLots = new[]
         {
             new Lot { Id = 1, Name = "Emerald ring", CategoryId = 2, SellerId = 1, StartPrice = 1200, StatusId = 1, OpenDate = new DateTime(2022, 6, 16), CloseDate = new DateTime(2022, 6, 26) },
-            new Lot { Id = 2, Name = "Landscape painting", CategoryId = 3, SellerId = 1, BuyerId = 3, StartPrice = 500, StatusId = 2, OpenDate = new DateTime(2021, 1, 11), CloseDate = new DateTime(2021, 3, 11) },
+            new Lot { Id = 2, Name = "Landscape painting", CategoryId = 3, SellerId = 1, StartPrice = 500, StatusId = 2, OpenDate = new DateTime(2021, 1, 11), CloseDate = new DateTime(2021, 3, 11) },
             new Lot { Id = 3, Name = "Leather Jacket", CategoryId = 1, SellerId = 2, StartPrice = 200, StatusId = 3, OpenDate = new DateTime(2022, 1, 1), CloseDate = new DateTime(2022, 1, 11)},
             new Lot { Id = 4, Name = "War and Peace First Edition", CategoryId = 7, SellerId = 2, StatusId = 4, StartPrice = 350}
         };

@@ -10,7 +10,6 @@ namespace Auction.Domain.Entities
         public DateTime OpenDate { get; set; }
         public DateTime CloseDate { get; set; }
         public decimal StartPrice { get; set; }
-        public string ImagePath { get; set; }
         public LotImage Image { get; set; }
         public ReviewDetails ReviewDetails { get; set; }
         public BiddingDetails BiddingDetails { get; set; }
@@ -23,8 +22,5 @@ namespace Auction.Domain.Entities
 
         public int SellerId { get; set; }
         public Person Seller { get; set; }
-
-        public int BuyerId { get; set; }
-        public Person Buyer { get; set; }
     }
 }

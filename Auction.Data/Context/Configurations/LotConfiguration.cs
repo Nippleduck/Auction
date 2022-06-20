@@ -28,12 +28,6 @@ namespace Auction.Data.Context.Configurations
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder
-                .HasOne(l => l.Buyer)
-                .WithMany(p => p.PurchasedLots)
-                .HasForeignKey(l => l.BuyerId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            builder
                 .HasOne(l => l.Category)
                 .WithMany(c => c.Lots);
 

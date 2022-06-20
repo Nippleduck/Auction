@@ -11,7 +11,6 @@ namespace Auction.Domain.Entities
         public DateTime BirthDate { get; set; }
         
         public ICollection<Lot> OwnedLots { get; set; }
-        public ICollection<Lot> PurchasedLots { get; set; }
         public ICollection<Bid> Bids { get; set; }
     }
 }

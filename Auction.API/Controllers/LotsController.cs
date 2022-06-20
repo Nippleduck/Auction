@@ -18,13 +18,14 @@ namespace Auction.API.Controllers
 
         private readonly ILotService lotService;
 
-        [HttpPost("new")]
-        public async Task<ActionResult<int>> CreateAsync([FromForm]CreateLotRequest request, CancellationToken ct)
+        [HttpPost("{id}/create")]
+        public async Task<ActionResult<int>> CreateAsync(int id, [FromForm]CreateLotRequest request, CancellationToken ct)
         {
             //if (!ModelState.IsValid) return BadRequest();
 
             var newLot = new NewLotModel
             {
+                SellerId = id,
                 Name = request.Name,
                 Description = request.Description,
                 StartPrice = request.StartPrice,

@@ -80,7 +80,6 @@ namespace Auction.Data.Tests
 
             return
                 x.Id == y.Id &&
-                x.BuyerId == y.BuyerId &&
                 x.StartPrice == y.StartPrice &&
                 x.CloseDate == y.CloseDate &&
                 x.OpenDate == y.OpenDate &&

@@ -170,7 +170,6 @@ namespace Auction.Data.Tests.RepositoriesTests
                 Name = "Landscape painting",
                 CategoryId = 3,
                 SellerId = 1,
-                BuyerId = 3,
                 StartPrice = 500,
                 StatusId = 2,
                 OpenDate = new DateTime(2021, 1, 11),

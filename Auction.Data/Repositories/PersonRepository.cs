@@ -15,7 +15,6 @@ namespace Auction.Data.Repositories
         public override async Task<Person> GetByIdWithDetailsAsync(int id, CancellationToken ct = default) =>
             await context.Persons
                 .Include(p => p.Bids)
-                .Include(p => p.PurchasedLots)
                 .Include(p => p.OwnedLots)
                 .FirstOrDefaultAsync(p => p.Id == id, ct);
 
@@ -23,7 +22,6 @@ namespace Auction.Data.Repositories
             await context.Persons
                 .AsNoTracking()
                 .Include(p => p.Bids)
-                .Include(p => p.PurchasedLots)
                 .Include(p => p.OwnedLots)
                 .ToListAsync(ct);
     }

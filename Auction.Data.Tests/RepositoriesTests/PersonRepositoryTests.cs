@@ -60,11 +60,6 @@ namespace Auction.Data.Tests.RepositoriesTests
                 .Using(new BidEqualityComparer()),
                 message: "Person does not contain expected bids");
 
-            Assert.That(person.PurchasedLots,
-                Is.EqualTo(ExpectedLots.Where(l => l.BuyerId == person.Id))
-                .Using(new LotEqualityComparer()),
-                message: "Person does not contain expected purchased lots");
-
             Assert.That(person.OwnedLots,
                 Is.EqualTo(ExpectedLots.Where(l => l.SellerId == person.Id))
                 .Using(new LotEqualityComparer()),
@@ -86,11 +81,6 @@ namespace Auction.Data.Tests.RepositoriesTests
             Assert.That(persons.SelectMany(p => p.Bids).OrderBy(b => b.Id),
                 Is.EqualTo(ExpectedBids).Using(new BidEqualityComparer()),
                 message: "Persons does not contain expected bids");
-
-            Assert.That(persons.SelectMany(p => p.PurchasedLots).OrderBy(l => l.Id),
-                Is.EqualTo(ExpectedLots.Where(l => l.BuyerId != 0))
-                .Using(new LotEqualityComparer()),
-                message: "Persons does not contain expected purchased lots");
 
             Assert.That(persons.SelectMany(p => p.OwnedLots).OrderBy(l => l.Id),
                 Is.EqualTo(ExpectedLots).Using(new LotEqualityComparer()),
@@ -173,7 +163,7 @@ namespace Auction.Data.Tests.RepositoriesTests
         private static readonly IEnumerable<Lot> ExpectedLots = new[]
         {
             new Lot { Id = 1, Name = "Emerald ring", CategoryId = 2, SellerId = 1, StartPrice = 1200, StatusId = 1, OpenDate = new DateTime(2022, 6, 16), CloseDate = new DateTime(2022, 6, 26) },
-            new Lot { Id = 2, Name = "Landscape painting", CategoryId = 3, SellerId = 1, BuyerId = 3, StartPrice = 500, StatusId = 2, OpenDate = new DateTime(2021, 1, 11), CloseDate = new DateTime(2021, 3, 11) },
+            new Lot { Id = 2, Name = "Landscape painting", CategoryId = 3, SellerId = 1, StartPrice = 500, StatusId = 2, OpenDate = new DateTime(2021, 1, 11), CloseDate = new DateTime(2021, 3, 11) },
             new Lot { Id = 3, Name = "Leather Jacket", CategoryId = 1, SellerId = 2, StartPrice = 200, StatusId = 3, OpenDate = new DateTime(2022, 1, 1), CloseDate = new DateTime(2022, 1, 11)},
             new Lot { Id = 4, Name = "War and Peace First Edition", CategoryId = 7, SellerId = 2, StatusId = 4, StartPrice = 350}
         };

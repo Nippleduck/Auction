@@ -12,6 +12,7 @@ using Ardalis.Result;
 using System.Linq;
 using AutoMapper;
 using System.IO;
+using Auction.Domain.Entities.Enums;
 
 namespace Auction.Business.Services
 {
@@ -73,10 +74,12 @@ namespace Auction.Business.Services
 
             var lot = new Lot
             {
+                SellerId = model.SellerId,
                 Name = model.Name,
                 Description = model.Description,
                 StartPrice = model.StartPrice,
-                Image = image
+                Image = image,
+                ReviewDetails = new ReviewDetails()
             };
 
             await uof.LotRepository.AddAsync(lot, ct);

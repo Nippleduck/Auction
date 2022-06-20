@@ -60,7 +60,8 @@ namespace Auction.Data.Repositories
                 .Include(lot => lot.Category)
                 .Include(lot => lot.Status)
                 .Include(lot => lot.Seller)
-                .Where(lot => lot.BuyerId == userId)
+                .Include(lot => lot.BiddingDetails)
+                .Where(lot => lot.BiddingDetails.BuyerId == userId)
                 .ToListAsync(ct);
 
         public async Task<IEnumerable<Lot>> GetUserSaleLotsAsync(int userId, CancellationToken ct = default) =>
@@ -80,7 +81,6 @@ namespace Auction.Data.Repositories
                 .Include(lot => lot.Category)
                 .Include(lot => lot.Status)
                 .Include(lot => lot.Seller)
-                .Include(lot => lot.Buyer)
                 .Include(lot => lot.ReviewDetails)
                 .FirstOrDefaultAsync(lot => lot.Id == id, ct);
 
@@ -93,7 +93,6 @@ namespace Auction.Data.Repositories
                 .Include(lot => lot.Category)
                 .Include(lot => lot.Status)
                 .Include(lot => lot.Seller)
-                .Include(lot => lot.Buyer)
                 .Include(lot => lot.ReviewDetails)
                 .ToListAsync(ct);
 

@@ -9,6 +9,12 @@ namespace Auction.Data.Context.Configurations
         public void Configure(EntityTypeBuilder<BiddingDetails> builder)
         {
             builder
+                .HasOne(bd => bd.Buyer)
+                .WithMany()
+                .HasForeignKey(bd => bd.BuyerId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder
                 .Property(bd => bd.CurrentBid)
                 .HasColumnType("decimal(10, 2)");
 
