@@ -22,7 +22,7 @@ namespace Auction.API.Controllers
         [HttpPost("{id}/create")]
         public async Task<ActionResult<int>> CreateAsync(int id, [FromForm]CreateLotRequest request, CancellationToken ct)
         {
-            //if (!ModelState.IsValid) return BadRequest();
+            if (!ModelState.IsValid) return BadRequest();
 
             var newLot = new NewLotModel
             {

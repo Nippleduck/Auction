@@ -1,7 +1,6 @@
 ﻿using Auction.ApiModels.Authentication.Requests;
 using Auction.ApiModels.Authentication.Responses;
 using Auction.Data.Identity;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -21,7 +20,7 @@ namespace Auction.API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> RegisterAsync([FromBody]RegisterRequest request)
         {
-            //if (!ModelState.IsValid) return BadRequest();
+            if (!ModelState.IsValid) return BadRequest();
 
             var result = await identityService.RegisterAsync(request);
 

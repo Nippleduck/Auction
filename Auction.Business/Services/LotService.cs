@@ -11,8 +11,6 @@ using System.Threading;
 using Ardalis.Result;
 using System.Linq;
 using AutoMapper;
-using System.IO;
-using Auction.Domain.Entities.Enums;
 
 namespace Auction.Business.Services
 {
