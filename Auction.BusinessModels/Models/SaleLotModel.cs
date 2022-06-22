@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Auction.Business.Models
+namespace Auction.BusinessModels.Models
 {
     public class SaleLotModel
     {

@@ -1,7 +1,6 @@
 ﻿using Auction.ApiModels.Lots.Requests;
 using Auction.API.Controllers.Base;
 using Auction.Business.Interfaces.Services;
-using Auction.Business.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading;
@@ -10,6 +9,7 @@ using Ardalis.Result.AspNetCore;
 using Ardalis.Result;
 using Microsoft.AspNetCore.Authorization;
 using Auction.API.CurrentUserService;
+using Auction.BusinessModels.Models;
 
 namespace Auction.API.Controllers
 {

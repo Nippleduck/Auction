@@ -1,4 +1,4 @@
-﻿namespace Auction.Business.Models
+﻿namespace Auction.BusinessModels.Models
 {
     public class NewLotModel
     {

@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auction.Data.Tests", "Aucti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auction.ApiModels", "Auction.ApiModels\Auction.ApiModels.csproj", "{549BD968-661C-43DD-A5F4-0404664A6B1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auction.BusinessModels", "Auction.BusinessModels\Auction.BusinessModels.csproj", "{313A1B49-F930-4DF2-B028-83372F0716A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{549BD968-661C-43DD-A5F4-0404664A6B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{549BD968-661C-43DD-A5F4-0404664A6B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{549BD968-661C-43DD-A5F4-0404664A6B1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{313A1B49-F930-4DF2-B028-83372F0716A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{313A1B49-F930-4DF2-B028-83372F0716A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{313A1B49-F930-4DF2-B028-83372F0716A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{313A1B49-F930-4DF2-B028-83372F0716A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

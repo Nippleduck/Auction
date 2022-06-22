@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Auction.Business.Models
+namespace Auction.BusinessModels.Models
 {
     public class ImageModel
     {

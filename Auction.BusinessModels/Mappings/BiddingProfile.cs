@@ -1,8 +1,8 @@
-﻿using Auction.Business.Models;
+﻿using Auction.BusinessModels.Models;
 using Auction.Domain.Entities;
 using AutoMapper;
 
-namespace Auction.Business.Mappings
+namespace Auction.BusinessModels.Mappings
 {
     public class BiddingProfile : Profile
     {

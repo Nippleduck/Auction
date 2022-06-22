@@ -7,12 +7,10 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Auction.BusinessModels\Auction.BusinessModels.csproj" />
-    <ProjectReference Include="..\Auction.Data\Auction.Data.csproj" />
+    <ProjectReference Include="..\Auction.Domain\Auction.Domain.csproj" />
   </ItemGroup>
 
 </Project>

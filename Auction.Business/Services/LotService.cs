@@ -2,7 +2,6 @@
 using Auction.Business.ImageProcessing;
 using Auction.Business.Services.Base;
 using Auction.Business.Interfaces;
-using Auction.Business.Models;
 using Auction.Domain.Entities;
 using Auction.Data.Interfaces;
 using System.Collections.Generic;
@@ -11,6 +10,7 @@ using System.Threading;
 using Ardalis.Result;
 using System.Linq;
 using AutoMapper;
+using Auction.BusinessModels.Models;
 
 namespace Auction.Business.Services
 {

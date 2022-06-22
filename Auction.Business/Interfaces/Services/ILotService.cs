@@ -1,5 +1,5 @@
 ﻿using Ardalis.Result;
-using Auction.Business.Models;
+using Auction.BusinessModels.Models;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
