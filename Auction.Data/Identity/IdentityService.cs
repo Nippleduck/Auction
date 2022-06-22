@@ -1,12 +1,10 @@
-﻿using Auction.ApiModels.Authentication.Validators;
-using Auction.ApiModels.Authentication.Requests;
+﻿using Auction.ApiModels.Authentication.Requests;
 using Auction.ApiModels.Authentication.Responses;
 using Auction.Authentication.JWT.Interfaces;
 using Auction.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using System.Linq;
-using Ardalis.Result.FluentValidation;
 using Ardalis.Result;
 
 namespace Auction.Data.Identity
