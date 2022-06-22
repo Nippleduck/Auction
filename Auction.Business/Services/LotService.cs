@@ -32,25 +32,25 @@ namespace Auction.Business.Services
             return Result.Success(mapped);
         }
 
-        public async Task<Result<IEnumerable<LotModel>>> GetForSaleAsync(CancellationToken ct)
+        public async Task<Result<IEnumerable<SaleLotModel>>> GetForSaleAsync(CancellationToken ct)
         {
             var lots = await uof.LotRepository.GetAllAvailableForSaleAsync(ct);
 
             if (lots == null || !lots.Any()) return Result.NotFound();
 
-            var mapped = mapper.Map<IEnumerable<LotModel>>(lots);
+            var mapped = mapper.Map<IEnumerable<SaleLotModel>>(lots);
 
             return Result.Success(mapped);
         }
 
-        public async Task<Result<IEnumerable<LotModel>>> GetCategoryMostPopularLotsWithLimitAsync
+        public async Task<Result<IEnumerable<SaleLotModel>>> GetCategoryMostPopularLotsWithLimitAsync
             (int categoryId, int limit, CancellationToken ct)
         {
             var mostPopular = await uof.LotRepository.GetMostPupularByCategoryWithLimitAsync(categoryId, limit, ct);
 
             if (mostPopular == null || !mostPopular.Any()) return Result.NotFound();
 
-            var mapped = mapper.Map<IEnumerable<LotModel>>(mostPopular);
+            var mapped = mapper.Map<IEnumerable<SaleLotModel>>(mostPopular);
 
             return Result.Success(mapped);
         }

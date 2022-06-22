@@ -2,7 +2,7 @@
 
 namespace Auction.Business.Models
 {
-    public class ListLotModel
+    public class SaleLotModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

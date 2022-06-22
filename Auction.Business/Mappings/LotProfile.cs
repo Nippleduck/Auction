@@ -20,7 +20,7 @@ namespace Auction.Business.Mappings
                 .ForPath(l => l.BiddingDetails.MinimalBid, p => p.MapFrom(x => x.MinimalBid))
                 .ForPath(l => l.BiddingDetails.CurrentBid, p => p.MapFrom(x => x.CurrentBid));
 
-            CreateMap<Lot, ListLotModel>()
+            CreateMap<Lot, SaleLotModel>()
                 .ForMember(l => l.BidsCount, p => p.MapFrom(x => x.BiddingDetails.BidsCount))
                 .ForMember(l => l.CurrentBid, p => p.MapFrom(x => x.BiddingDetails.CurrentBid));
 
