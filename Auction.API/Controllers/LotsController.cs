@@ -1,15 +1,15 @@
-﻿using Auction.ApiModels.Lots.Requests;
+﻿using Auction.Business.Interfaces.Services;
+using Auction.BusinessModels.Models;
+using Auction.ApiModels.Lots.Requests;
+using Auction.API.CurrentUserService;
 using Auction.API.Controllers.Base;
-using Auction.Business.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.Result.AspNetCore;
 using Ardalis.Result;
-using Microsoft.AspNetCore.Authorization;
-using Auction.API.CurrentUserService;
-using Auction.BusinessModels.Models;
 using AutoMapper;
 
 namespace Auction.API.Controllers
