@@ -16,11 +16,11 @@ namespace Auction.API.Controllers
         private const string ContentType = "image/jpeg";
 
         [HttpGet("lot/{id}/large")]
-        public async Task<ActionResult> GetFullSizeAsync(int id, CancellationToken ct) =>
+        public async Task<ActionResult> GetFullSize(int id, CancellationToken ct) =>
             File(await imageService.GetFullSizeImageAsync(id, ct), ContentType);
 
         [HttpGet("lot/{id}/thumbnail")]
-        public async Task<ActionResult> GetThumbnailAsync(int id, CancellationToken ct) =>
+        public async Task<ActionResult> GetThumbnail(int id, CancellationToken ct) =>
             File(await imageService.GetThumbnailImageAsync(id, ct), ContentType);
     }
 }

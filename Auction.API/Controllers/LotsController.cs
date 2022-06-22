@@ -21,7 +21,7 @@ namespace Auction.API.Controllers
 
         [HttpPost("{id}/create")]
         [Authorize(Roles = "Customer,Administrator")]
-        public async Task<ActionResult<int>> CreateAsync(int id, [FromForm]CreateLotRequest request, CancellationToken ct)
+        public async Task<ActionResult<int>> Create(int id, [FromForm]CreateLotRequest request, CancellationToken ct)
         {
             if (!ModelState.IsValid) return BadRequest();
 
@@ -49,14 +49,14 @@ namespace Auction.API.Controllers
         [HttpDelete("{id}")]
         [TranslateResultToActionResult]
         [Authorize(Roles = "Customer,Administrator")]
-        public async Task<Result> DeleteAsync(int id, CancellationToken ct) => await lotService.DeleteLotAsync(id, ct);
+        public async Task<Result> Delete(int id, CancellationToken ct) => await lotService.DeleteLotAsync(id, ct);
 
         [HttpGet("{id}")]
         [TranslateResultToActionResult]
-        public async Task<LotModel> GetAsync(int id, CancellationToken ct) => await lotService.GetLotInfoByIdAsync(id, ct);
+        public async Task<LotModel> Get(int id, CancellationToken ct) => await lotService.GetLotInfoByIdAsync(id, ct);
 
         [HttpGet("sale")]
         [TranslateResultToActionResult]
-        public async Task<Result<IEnumerable<LotModel>>> GetForSaleAsync(CancellationToken ct) => await lotService.GetForSaleAsync(ct);
+        public async Task<Result<IEnumerable<LotModel>>> GetForSale(CancellationToken ct) => await lotService.GetForSaleAsync(ct);
     }
 }
