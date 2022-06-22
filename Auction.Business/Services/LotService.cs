@@ -99,5 +99,10 @@ namespace Auction.Business.Services
 
             return Result.Success();
         }
+
+        public Task<Result> UpdateLotAsync(LotModel model, CancellationToken ct)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
