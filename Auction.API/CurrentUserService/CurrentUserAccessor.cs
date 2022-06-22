@@ -8,8 +8,10 @@ namespace Auction.API.CurrentUserService
     {
         public CurrentUserAccessor(IHttpContextAccessor contextAccessor)
         {
-            UserId = int.Parse(contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
-            IsAdmin = contextAccessor.HttpContext.User.IsInRole(Roles.Administrator.ToString());
+            UserId = int.Parse(contextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var hasAdminClaim = contextAccessor.HttpContext?.User?.IsInRole(Roles.Administrator.ToString());
+            IsAdmin = hasAdminClaim ?? false;
         }
 
         public int UserId { get; }

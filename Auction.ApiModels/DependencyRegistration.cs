@@ -4,12 +4,13 @@ using System.Reflection;
 
 namespace Auction.ApiModels
 {
-    public static class ValidatorsRegistration
+    public static class DependencyRegistration
     {
-        public static IServiceCollection AddApiModelsValidation(this IServiceCollection services)
+        public static IServiceCollection AddApiModels(this IServiceCollection services)
         {
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
             return services;
         }
     }

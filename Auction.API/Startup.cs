@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using FluentValidation.AspNetCore;
+using Auction.BusinessModels;
 
 namespace Auction.API
 {
@@ -29,7 +30,8 @@ namespace Auction.API
             services.AddDataDependencies(Configuration);
             services.AddBusinessDependencies();
             services.AddCustomTokenAuthentication(Configuration);
-            services.AddApiModelsValidation();
+            services.AddApiModels();
+            services.AddBusinessModels();
 
             services.AddScoped<CurrentUserAccessor>();
         }

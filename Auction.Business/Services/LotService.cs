@@ -55,7 +55,7 @@ namespace Auction.Business.Services
             return Result.Success(mapped);
         }
 
-        public async Task<Result<int>> CreateNewLotAsync(NewLotModel model, CancellationToken ct)
+        public async Task<Result<int>> CreateNewLotAsync(int sellerId, NewLotModel model, CancellationToken ct)
         {
             using var stream = model.Image.Content;
 
@@ -72,7 +72,7 @@ namespace Auction.Business.Services
 
             var lot = new Lot
             {
-                SellerId = model.SellerId,
+                SellerId = sellerId,
                 Name = model.Name,
                 Description = model.Description,
                 StartPrice = model.StartPrice,
