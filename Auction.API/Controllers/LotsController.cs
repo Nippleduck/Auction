@@ -27,8 +27,6 @@ namespace Auction.API.Controllers
         [TranslateResultToActionResult]
         public async Task<Result<int>> Create([FromForm]CreateLotRequest request, CancellationToken ct)
         {
-            if (!ModelState.IsValid) return Result.Error("Lot form is not correct");
-
             var newLot = new NewLotModel
             {
                 SellerId = currentUser.UserId,
@@ -45,7 +43,7 @@ namespace Auction.API.Controllers
                 }
             };
 
-            return  await lotService.CreateNewLotAsync(newLot, ct);
+            return await lotService.CreateNewLotAsync(newLot, ct);
         }
 
         [HttpDelete("{id}")]

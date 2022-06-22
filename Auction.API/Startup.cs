@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using FluentValidation.AspNetCore;
 
 namespace Auction.API
 {
@@ -23,7 +24,7 @@ namespace Auction.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation();
 
             services.AddDataDependencies(Configuration);
             services.AddBusinessDependencies();

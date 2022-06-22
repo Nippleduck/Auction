@@ -52,11 +52,6 @@ namespace Auction.Data.Identity
 
         public async Task<Result<bool>> RegisterAsync(RegisterRequest request)
         {
-            var validator = new RegisterRequestValidator();
-            var result = await validator.ValidateAsync(request);
-
-            if (!result.IsValid) return Result.Invalid(result.AsErrors());
-
             var withSameEmail = await userManager.FindByEmailAsync(request.Email);
 
             if (withSameEmail != null) return Result.Error("User with specified email exists");
