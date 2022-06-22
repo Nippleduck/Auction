@@ -1,4 +1,5 @@
 ﻿using Auction.ApiModels.Lots.Requests;
+using Auction.API.Controllers.Base;
 using Auction.Business.Interfaces.Services;
 using Auction.Business.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -8,26 +9,29 @@ using System.Threading.Tasks;
 using Ardalis.Result.AspNetCore;
 using Ardalis.Result;
 using Microsoft.AspNetCore.Authorization;
+using Auction.API.CurrentUserService;
 
 namespace Auction.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LotsController : ControllerBase
+    public class LotsController : BaseController
     {
-        public LotsController(ILotService lotService) => this.lotService = lotService;
+        public LotsController(ILotService lotService, CurrentUserAccessor currentUser) 
+            : base(currentUser) => this.lotService = lotService;
 
         private readonly ILotService lotService;
 
-        [HttpPost("{id}/create")]
+        [HttpPost()]
         [Authorize(Roles = "Customer,Administrator")]
-        public async Task<ActionResult<int>> Create(int id, [FromForm]CreateLotRequest request, CancellationToken ct)
+        [TranslateResultToActionResult]
+        public async Task<Result<int>> Create([FromForm]CreateLotRequest request, CancellationToken ct)
         {
-            if (!ModelState.IsValid) return BadRequest();
+            if (!ModelState.IsValid) return Result.Error("Lot form is not correct");
 
             var newLot = new NewLotModel
             {
-                SellerId = id,
+                SellerId = currentUser.UserId,
                 Name = request.Name,
                 Description = request.Description,
                 CategoryId = request.CategoryId,
@@ -41,9 +45,7 @@ namespace Auction.API.Controllers
                 }
             };
 
-            var lotId = await lotService.CreateNewLotAsync(newLot, ct);
-
-            return Ok(lotId.Value);
+            return  await lotService.CreateNewLotAsync(newLot, ct);
         }
 
         [HttpDelete("{id}")]

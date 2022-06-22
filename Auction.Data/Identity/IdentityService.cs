@@ -38,7 +38,7 @@ namespace Auction.Data.Identity
             if (!signIn.Succeeded) return Result.Error($"Invalid credentials for '{request.Email}'");
 
             var roles = await userManager.GetRolesAsync(user);
-            var token = await jwtFactory.GenerateEncodedTokenAsync(user.Id, user.Email, roles.First());
+            var token = await jwtFactory.GenerateEncodedTokenAsync(user.PersonId.ToString(), user.Email, roles.First());
 
             var response = new AuthenticationResponse
             {

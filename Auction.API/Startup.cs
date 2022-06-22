@@ -1,8 +1,9 @@
-using Auction.ApiModels;
 using Auction.Authentication.JWT.RegistrationExtensions;
+using Auction.API.CurrentUserService;
+using Auction.ApiModels;
 using Auction.Business;
-using Auction.Data;
 using Auction.Data.Context;
+using Auction.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +29,8 @@ namespace Auction.API
             services.AddBusinessDependencies();
             services.AddCustomTokenAuthentication(Configuration);
             services.AddApiModelsValidation();
+
+            services.AddScoped<CurrentUserAccessor>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
