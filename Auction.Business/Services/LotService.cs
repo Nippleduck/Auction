@@ -100,9 +100,14 @@ namespace Auction.Business.Services
             return Result.Success();
         }
 
-        public Task<Result> UpdateLotAsync(LotModel model, CancellationToken ct)
+        public async Task<Result> UpdateLotAsync(LotModel model, CancellationToken ct)
         {
-            throw new System.NotImplementedException();
+            var lot = mapper.Map<Lot>(model);
+
+            uof.LotRepository.Update(lot);
+            await uof.SaveAsync();
+
+            return Result.Success();
         }
     }
 }

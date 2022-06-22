@@ -22,7 +22,7 @@ namespace Auction.API.Controllers
 
         private readonly ILotService lotService;
 
-        [HttpPost()]
+        [HttpPost]
         [Authorize(Roles = "Customer,Administrator")]
         [TranslateResultToActionResult]
         public async Task<Result<int>> Create([FromForm]CreateLotRequest request, CancellationToken ct)
@@ -57,6 +57,11 @@ namespace Auction.API.Controllers
 
         [HttpGet("sale")]
         [TranslateResultToActionResult]
-        public async Task<Result<IEnumerable<LotModel>>> GetForSale(CancellationToken ct) => await lotService.GetForSaleAsync(ct);
+        public async Task<Result<IEnumerable<SaleLotModel>>> GetForSale(CancellationToken ct) => await lotService.GetForSaleAsync(ct);
+
+        [HttpPut]
+        [TranslateResultToActionResult]
+        [Authorize(Roles = "Customer,Administrator")]
+        public async Task<Result> Update(LotModel model, CancellationToken ct) => await lotService.UpdateLotAsync(model, ct);
     }
 }
