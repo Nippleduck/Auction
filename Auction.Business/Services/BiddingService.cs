@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Ardalis.Result;
 using AutoMapper;
+using System;
 
 namespace Auction.Business.Services
 {
@@ -23,7 +24,8 @@ namespace Auction.Business.Services
             {
                 BidderId = bidder,
                 Price = price,
-                BiddingDetailsId = details.Id
+                BiddingDetailsId = details.Id,
+                PlacedOn = DateTime.UtcNow
             };
 
             await uof.BidRepository.AddAsync(bid, ct);
