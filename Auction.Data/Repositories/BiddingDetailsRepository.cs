@@ -28,6 +28,9 @@ namespace Auction.Data.Repositories
                 .ToListAsync(ct);
 
         public async Task<BiddingDetails> GetByLotIdAsync(int lotId, CancellationToken ct = default) =>
-            await context.BiddingDetails.AsNoTracking().FirstOrDefaultAsync(bd => bd.LotId == lotId, ct);
+            await context.BiddingDetails
+            .AsNoTracking()
+            .Include(bd => bd.Lot)
+            .FirstOrDefaultAsync(bd => bd.LotId == lotId, ct);
     }
 }

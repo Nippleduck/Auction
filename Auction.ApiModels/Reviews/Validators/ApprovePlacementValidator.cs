@@ -9,6 +9,7 @@ namespace Auction.ApiModels.Reviews.Validators
         public ApprovePlacementValidator()
         {
             RuleFor(x => x.LotId).NotEmpty();
+            RuleFor(x => x.StatusId).NotEmpty();
             RuleFor(x => x.OpenDate)
                 .NotEmpty()
                 .LessThan(x => x.CloseDate)

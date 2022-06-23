@@ -42,11 +42,11 @@ namespace Auction.API
             {
                 app.UseDeveloperExceptionPage();
 
-                using var scope = app.ApplicationServices.CreateScope();
-                var initializer = scope.ServiceProvider.GetRequiredService<DbContextSeeder>();
+                //using var scope = app.ApplicationServices.CreateScope();
+                //var initializer = scope.ServiceProvider.GetRequiredService<DbContextSeeder>();
 
-                initializer.InitializeAsync().GetAwaiter().GetResult();
-                initializer.TrySeedAsync().GetAwaiter().GetResult();
+                //initializer.InitializeAsync().GetAwaiter().GetResult();
+                //initializer.TrySeedAsync().GetAwaiter().GetResult();
             }
 
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());

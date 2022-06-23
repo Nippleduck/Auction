@@ -1,13 +1,14 @@
-﻿using Ardalis.Result;
-using Auction.Business.Interfaces.Services;
+﻿using Auction.Business.Interfaces.Services;
 using Auction.Business.Services.Base;
+using Auction.BusinessModels.Models;
+using Auction.Domain.Entities.Enums;
 using Auction.Data.Interfaces;
-using Auction.Domain.Entities;
-using AutoMapper;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Threading;
+using System.Linq;
+using Ardalis.Result;
+using AutoMapper;
 
 namespace Auction.Business.Services
 {
@@ -15,20 +16,49 @@ namespace Auction.Business.Services
     {
         public ReviewService(IMapper mapper, IUnitOfWork uof) : base(mapper, uof) { }
 
-        public async Task<Result<IEnumerable<ReviewDetails>>> GetRequestedForReviewAsync(CancellationToken ct)
+        public async Task<Result<IEnumerable<LotModel>>> GetRequestedForReviewAsync(CancellationToken ct)
         {
             var details = await uof.LotRepository.GetRequestedForReviewAsync(ct);
 
             if (details == null || !details.Any()) return Result.NotFound();
 
-            var mapped = mapper.Map<IEnumerable<ReviewDetails>>(details);
+            var mapped = mapper.Map<IEnumerable<LotModel>>(details);
 
             return Result.Success(mapped);
         }  
 
-        public async Task<Result> ApproveAsync(int lotId)
+        public async Task<Result> ApproveAsync(ReviewApprovalModel model, CancellationToken ct)
         {
-            
+            var lot = await uof.LotRepository.GetByIdWithDetailsAsync(model.LotId, ct);
+
+            if (lot == null) return Result.NotFound();
+
+            lot.OpenDate = model.OpenDate;
+            lot.CloseDate = model.CloseDate;
+            lot.StatusId = model.StatusId;
+
+            lot.ReviewDetails.Status = ReviewStatus.Allowed;
+            lot.ReviewDetails.Feedback = model.Feedback;
+
+            uof.LotRepository.Update(lot);
+            await uof.SaveAsync(ct);
+
+            return Result.SuccessWithMessage($"Lot: ({lot.Name}) approved");
+        }
+
+        public async Task<Result> RejectAsync(int lotId, string feedback, CancellationToken ct)
+        {
+            var details = await uof.ReviewDetailsRepository.GetByLotIdAsync(lotId, ct);
+
+            if (details == null) return Result.NotFound();
+
+            details.Status = ReviewStatus.Rejected;
+            details.Feedback = feedback;
+
+            uof.ReviewDetailsRepository.Update(details);
+            await uof.SaveAsync(ct);
+
+            return Result.Success();
         }
     }
 }

@@ -22,5 +22,8 @@ namespace Auction.Data.Repositories
             await context.Reviews
                 .Include(r => r.Lot)
                 .FirstOrDefaultAsync(r => r.Id == id, ct);
+
+        public async Task<ReviewDetails> GetByLotIdAsync(int lotId, CancellationToken ct = default) =>
+            await context.Reviews.FirstOrDefaultAsync(r => r.LotId == lotId, ct);   
     }
 }

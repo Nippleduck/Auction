@@ -8,7 +8,8 @@ namespace Auction.BusinessModels.Mappings
     {
         public BiddingProfile()
         {
-            CreateMap<Bid, BidModel>();
+            CreateMap<Bid, BidModel>()
+                .ForMember(b => b.Bidder, p => p.MapFrom(x => $"{x.Bidder.Name} {x.Bidder.Surname}"));
         }
     }
 }

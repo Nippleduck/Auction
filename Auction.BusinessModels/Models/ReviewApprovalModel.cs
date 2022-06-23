@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Auction.ApiModels.Reviews.Requests
+namespace Auction.BusinessModels.Models
 {
-    public class ApprovePlacementRequest
+    public class ReviewApprovalModel
     {
         public int LotId { get; set; }
         public int StatusId { get; set; }

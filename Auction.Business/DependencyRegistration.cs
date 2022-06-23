@@ -14,6 +14,8 @@ namespace Auction.Business
             services.AddTransient<IImageConverter, ImageConverter>();
 
             services.AddTransient<ILotService, LotService>();
+            services.AddTransient<IBiddingService, BiddingService>();
+            services.AddTransient<IReviewService, ReviewService>();
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

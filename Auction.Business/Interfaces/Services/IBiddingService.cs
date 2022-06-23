@@ -1,13 +1,13 @@
-﻿using Ardalis.Result;
-using Auction.Domain.Entities;
-using System.Threading;
+﻿using Auction.BusinessModels.Models;
 using System.Threading.Tasks;
+using System.Threading;
+using Ardalis.Result;
 
 namespace Auction.Business.Interfaces.Services
 {
     public interface IBiddingService
     {
         Task<Result> PlaceBidAsync(int bidder, int lotId, decimal price, CancellationToken ct);
-        Task<Result<Bid>> GetLotHighestBidderAsync(int lotId, CancellationToken ct);
+        Task<Result<BidModel>> GetLotHighestBidderAsync(int lotId, CancellationToken ct);
     }
 }

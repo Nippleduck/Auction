@@ -7,6 +7,7 @@ using System.Threading;
 using Ardalis.Result;
 using AutoMapper;
 using System;
+using Auction.BusinessModels.Models;
 
 namespace Auction.Business.Services
 {
@@ -19,6 +20,8 @@ namespace Auction.Business.Services
             var details = await uof.BiddingDetailsRepository.GetByLotIdAsync(lotId, ct);
 
             if (details == null) return Result.NotFound();
+
+            if (!CanPlaceBid(details, price)) return Result.Error();
 
             var bid = new Bid
             {
@@ -34,13 +37,26 @@ namespace Auction.Business.Services
             return Result.Success();
         }
 
-        public async Task<Result<Bid>> GetLotHighestBidderAsync(int lotId, CancellationToken ct)
+        public async Task<Result<BidModel>> GetLotHighestBidderAsync(int lotId, CancellationToken ct)
         {
             var bid = await uof.BidRepository.GetHighestBidderAsync(lotId, ct);
 
             if (bid == null) return Result.NotFound();
 
-            return Result.Success(bid);
+            var mapped = mapper.Map<BidModel>(bid);
+
+            return Result.Success(mapped);
+        }
+
+        private bool CanPlaceBid(BiddingDetails details, decimal price)
+        {
+            if (details.Lot.CloseDate < DateTime.UtcNow) return false;
+
+            if (details.Sold) return false;
+
+            if (price < details.CurrentBid + details.MinimalBid) return false;
+
+            return true;
         }
     }
 }
