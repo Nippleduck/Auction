@@ -10,8 +10,8 @@ namespace Auction.Business.ImageProcessing
     public enum ImageSize
     {
         Initial,
-        FullSize = 1000,
-        Thumbnail = 400
+        FullSize = 700,
+        Thumbnail = 500
     }
 
     public class ImageConverter : IImageConverter
@@ -30,7 +30,7 @@ namespace Auction.Business.ImageProcessing
             var width = image.Width;
             var height = image.Height;
  
-            if (width > (int)resizeWidth && resizeWidth <= ImageSize.Initial)
+            if (width > (int)resizeWidth && resizeWidth != ImageSize.Initial)
             {
                 height = (int)((double)resizeWidth / width * height);
                 width = (int)resizeWidth;
