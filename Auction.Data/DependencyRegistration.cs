@@ -24,7 +24,7 @@ namespace Auction.Data
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IdentityService>();
-            services.AddTransient<ImageService>();
+            services.AddTransient<ImageStoreService>();
 
             services.AddScoped<DbContextSeeder>();
 

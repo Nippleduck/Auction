@@ -9,9 +9,9 @@ namespace Auction.API.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
-        public ImagesController(ImageService imageService) => this.imageService = imageService;
+        public ImagesController(ImageStoreService imageService) => this.imageService = imageService;
 
-        private readonly ImageService imageService;
+        private readonly ImageStoreService imageService;
 
         private const string ContentType = "image/jpeg";
 

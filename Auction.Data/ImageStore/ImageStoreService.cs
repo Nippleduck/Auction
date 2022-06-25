@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Auction.Data.ImageStore
 {
-    public class ImageService
+    public class ImageStoreService
     {
-        public ImageService(AuctionContext context) => this.context = context;
+        public ImageStoreService(AuctionContext context) => this.context = context;
         
         private readonly AuctionContext context;
 
