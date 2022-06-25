@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Auction.Data.Identity;
 using Microsoft.EntityFrameworkCore;
+using Auction.Data.Identity.Models;
 using Auction.Domain.Entities;
 using System.Reflection;
 
@@ -18,6 +18,7 @@ namespace Auction.Data.Context
         public DbSet<AuctionStatus> Statuses { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<LotImage> Images { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

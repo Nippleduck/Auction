@@ -1,4 +1,4 @@
-﻿namespace Auction.Data.Identity
+﻿namespace Auction.Data.Identity.Models
 {
     public enum Roles
     {

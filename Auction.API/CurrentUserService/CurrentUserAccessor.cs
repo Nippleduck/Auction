@@ -1,4 +1,4 @@
-﻿using Auction.Data.Identity;
+﻿using Auction.Data.Identity.Models;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 

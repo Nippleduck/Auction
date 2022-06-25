@@ -16,15 +16,20 @@ namespace Auction.API.Controllers
 
         private readonly IdentityService identityService;
 
-        [HttpPost]
+        [HttpPost("register")]
         [TranslateResultToActionResult]
         public async Task<Result<bool>> Register([FromBody]RegisterRequest request) =>
             await identityService.RegisterAsync(request);
 
 
-        [HttpGet]
+        [HttpPost("login")]
         [TranslateResultToActionResult]
         public async Task<Result<AuthenticationResponse>> Authenticate([FromBody] AuthenticationRequest request) =>
             await identityService.AuthenticateAsync(request);
+
+        [HttpPost("refresh")]
+        [TranslateResultToActionResult]
+        public async Task<Result<RefreshTokenResponse>> RefreshToken([FromBody] RefreshTokenRequest request) =>
+            await identityService.RefreshTokenAsync(request);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Auction.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
-namespace Auction.Data.Identity
+namespace Auction.Data.Identity.Models
 {
     public class ApplicationUser : IdentityUser
     {

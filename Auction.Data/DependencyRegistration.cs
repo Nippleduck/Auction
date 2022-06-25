@@ -1,5 +1,6 @@
 ﻿using Auction.Data.Context;
 using Auction.Data.Identity;
+using Auction.Data.Identity.Models;
 using Auction.Data.ImageStore;
 using Auction.Data.Interfaces;
 using Microsoft.AspNetCore.Identity;

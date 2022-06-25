@@ -16,12 +16,14 @@ namespace Auction.Authentication.JWT
 
         private readonly JwtIssuerOptions jwtIssuerOptions;
 
-        public async Task<AccessToken> GenerateEncodedTokenAsync(string userId, string email, string role)
+        public async Task<(string, AccessToken)> GenerateEncodedTokenAsync(string userId, string email, string role)
         {
+            var tokenId = await jwtIssuerOptions.GenerateJti();
+
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Email, email),
-                new Claim(JwtRegisteredClaimNames.Jti, await jwtIssuerOptions.GenerateJti()),
+                new Claim(JwtRegisteredClaimNames.Jti, tokenId),
                 new Claim(JwtRegisteredClaimNames.Iat, jwtIssuerOptions.IssuedAt.ToString(), ClaimValueTypes.Integer64),
                 new Claim(ClaimTypes.NameIdentifier, userId),
                 new Claim(ClaimTypes.Role, role)
@@ -39,7 +41,7 @@ namespace Auction.Authentication.JWT
             var encodedToken = new JwtSecurityTokenHandler().WriteToken(jwt);
             var validFor = (int)jwtIssuerOptions.ValidFor.TotalSeconds;
 
-            return new AccessToken(encodedToken, validFor);
+            return (tokenId, new AccessToken(encodedToken, validFor));
         }
 
         public string GenerateRefreshToken(int size = 32)

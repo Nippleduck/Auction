@@ -1,4 +1,4 @@
-﻿using Auction.Data.Identity;
+﻿using Auction.Data.Identity.Models;
 using Auction.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

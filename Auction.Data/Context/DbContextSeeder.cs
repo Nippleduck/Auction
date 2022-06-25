@@ -1,10 +1,10 @@
-﻿using Auction.Data.Identity;
+﻿using Auction.Data.Identity.Models;
 using Auction.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
+using System.Linq;
+using System;
 
 namespace Auction.Data.Context
 {
