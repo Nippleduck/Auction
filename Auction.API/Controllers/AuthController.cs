@@ -1,10 +1,10 @@
-﻿using Ardalis.Result;
-using Ardalis.Result.AspNetCore;
-using Auction.ApiModels.Authentication.Requests;
+﻿using Auction.ApiModels.Authentication.Requests;
 using Auction.ApiModels.Authentication.Responses;
 using Auction.Data.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Ardalis.Result.AspNetCore;
+using Ardalis.Result;
 
 namespace Auction.API.Controllers
 {
@@ -20,7 +20,6 @@ namespace Auction.API.Controllers
         [TranslateResultToActionResult]
         public async Task<Result<bool>> Register([FromBody]RegisterRequest request) =>
             await identityService.RegisterAsync(request);
-
 
         [HttpPost("login")]
         [TranslateResultToActionResult]

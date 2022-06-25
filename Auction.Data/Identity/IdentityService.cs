@@ -1,19 +1,19 @@
 ﻿using Auction.Authentication.JWT.ConfigurationModels;
 using Auction.Authentication.JWT.Interfaces;
+using Auction.Authentication.JWT;
 using Auction.ApiModels.Authentication.Requests;
 using Auction.ApiModels.Authentication.Responses;
+using Auction.Domain.Entities;
 using Auction.Data.Identity.Models;
 using Auction.Data.Context;
-using Auction.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using System.Threading.Tasks;
-using System.Linq;
-using Ardalis.Result;
-using Auction.Authentication.JWT;
-using System;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
+using System.Threading.Tasks;
+using System.Linq;
+using System;
+using Ardalis.Result;
 
 namespace Auction.Data.Identity
 {
