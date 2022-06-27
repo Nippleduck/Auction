@@ -1,5 +1,6 @@
 ﻿using Auction.Data.Context;
 using Auction.Data.Interfaces.Repositories;
+using Auction.Data.QueryFilters;
 using Auction.Domain.Entities;
 using Auction.Domain.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -74,6 +75,31 @@ namespace Auction.Data.Repositories
                 .Where(lot => lot.SellerId == userId)
                 .ToListAsync(ct);
 
+        public async Task<IEnumerable<Lot>> GetByQueryFilterAsync(LotQueryFilter filter, CancellationToken ct = default)
+        {
+            var included = context.Lots
+                .AsNoTracking()
+                .Include(lot => lot.Category)
+                .Include(lot => lot.Status)
+                .Include(lot => lot.ReviewDetails)
+                .Include(lot => lot.BiddingDetails)
+                .Where(lot => lot.ReviewDetails.Status == ReviewStatus.Allowed);
+
+            var bySaleStatus = filter.ForSale ? included.Where(lot => DateTime.UtcNow < lot.CloseDate) :
+                included.Where(lot => DateTime.UtcNow < lot.CloseDate);
+
+            var byName = !string.IsNullOrWhiteSpace(filter.LotName) ?
+                bySaleStatus.Where(lot => lot.Name.Contains(filter.LotName)) : bySaleStatus;
+
+            var byMinPrice = filter.MinPrice != default ?
+                byName.Where(lot => lot.StartPrice > filter.MinPrice) : byName;
+
+            var byMaxPrice = filter.MaxPrice != default ? 
+                byMinPrice.Where(lot => lot.StartPrice < filter.MaxPrice) : byMinPrice;
+
+            return await byMaxPrice.ToListAsync(ct);
+        }
+
         public override async Task<Lot> GetByIdWithDetailsAsync(int id, CancellationToken ct = default) =>
             await context.Lots
                 .Include(lot => lot.BiddingDetails)
@@ -84,9 +110,8 @@ namespace Auction.Data.Repositories
                 .Include(lot => lot.ReviewDetails)
                 .FirstOrDefaultAsync(lot => lot.Id == id, ct);
 
-        public override async Task<IEnumerable<Lot>> GetAllWithDetailsAsync(CancellationToken ct = default)
-        {
-            var res = await context.Lots
+        public override async Task<IEnumerable<Lot>> GetAllWithDetailsAsync(CancellationToken ct = default) =>
+            await context.Lots
                 .AsNoTracking()
                 .Include(lot => lot.BiddingDetails)
                 .ThenInclude(bd => bd.Bids)
@@ -95,8 +120,5 @@ namespace Auction.Data.Repositories
                 .Include(lot => lot.Seller)
                 .Include(lot => lot.ReviewDetails)
                 .ToListAsync(ct);
-
-            return res;
-        }  
     }
 }

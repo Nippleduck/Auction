@@ -11,6 +11,7 @@ using Ardalis.Result;
 using System.Linq;
 using AutoMapper;
 using Auction.BusinessModels.Models;
+using Auction.Data.QueryFilters;
 
 namespace Auction.Business.Services
 {
@@ -35,6 +36,17 @@ namespace Auction.Business.Services
         public async Task<Result<IEnumerable<SaleLotModel>>> GetForSaleAsync(CancellationToken ct)
         {
             var lots = await uof.LotRepository.GetAllAvailableForSaleAsync(ct);
+
+            if (lots == null || !lots.Any()) return Result.NotFound();
+
+            var mapped = mapper.Map<IEnumerable<SaleLotModel>>(lots);
+
+            return Result.Success(mapped);
+        }
+
+        public async Task<Result<IEnumerable<SaleLotModel>>> GetForSaleByFilterAsync(LotQueryFilter filter, CancellationToken ct)
+        {
+            var lots = await uof.LotRepository.GetByQueryFilterAsync(filter, ct);
 
             if (lots == null || !lots.Any()) return Result.NotFound();
 

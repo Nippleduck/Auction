@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Ardalis.Result.AspNetCore;
 using Ardalis.Result;
 using AutoMapper;
+using Auction.Data.QueryFilters;
 
 namespace Auction.API.Controllers
 {
@@ -40,7 +41,8 @@ namespace Auction.API.Controllers
 
         [HttpGet("sale")]
         [TranslateResultToActionResult]
-        public async Task<Result<IEnumerable<SaleLotModel>>> GetForSale(CancellationToken ct) => await lotService.GetForSaleAsync(ct);
+        public async Task<Result<IEnumerable<SaleLotModel>>> GetForSale([FromQuery]LotQueryFilter filter, CancellationToken ct) 
+            => filter == null ? await lotService.GetForSaleAsync(ct) : await lotService.GetForSaleByFilterAsync(filter, ct);
 
         [HttpPut]
         [TranslateResultToActionResult]
