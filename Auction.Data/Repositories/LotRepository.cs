@@ -75,6 +75,11 @@ namespace Auction.Data.Repositories
                 .Where(lot => lot.SellerId == userId)
                 .ToListAsync(ct);
 
+        private const string ByDateAscending = "dateAsc";
+        private const string ByDateDescending = "dateDesc";
+        private const string ByPriceAscending = "priceAsc";
+        private const string ByPriceDescending = "priceDesc";
+
         public async Task<IEnumerable<Lot>> GetByQueryFilterAsync(LotQueryFilter filter, CancellationToken ct = default)
         {
             var included = context.Lots
@@ -97,7 +102,16 @@ namespace Auction.Data.Repositories
             var byMaxPrice = filter.MaxPrice != default ? 
                 byMinPrice.Where(lot => lot.StartPrice < filter.MaxPrice) : byMinPrice;
 
-            return await byMaxPrice.ToListAsync(ct);
+            var sorted = filter.SortBy switch
+            {
+                ByDateAscending => byMaxPrice.OrderBy(lot => lot.CloseDate),
+                ByDateDescending => byMaxPrice.OrderByDescending(lot => lot.CloseDate),
+                ByPriceAscending => byMaxPrice.OrderBy(lot => lot.StartPrice),
+                ByPriceDescending => byMaxPrice.OrderByDescending(lot => lot.StartPrice),
+                _ => byMaxPrice
+            };
+
+            return await sorted.ToListAsync(ct);
         }
 
         public override async Task<Lot> GetByIdWithDetailsAsync(int id, CancellationToken ct = default) =>
