@@ -91,16 +91,20 @@ namespace Auction.Data.Repositories
                 .Where(lot => lot.ReviewDetails.Status == ReviewStatus.Allowed);
 
             var bySaleStatus = filter.ForSale ? included.Where(lot => DateTime.UtcNow < lot.CloseDate) :
-                included.Where(lot => DateTime.UtcNow < lot.CloseDate);
+                included.Where(lot => DateTime.UtcNow > lot.CloseDate);
 
             var byName = !string.IsNullOrWhiteSpace(filter.LotName) ?
                 bySaleStatus.Where(lot => lot.Name.Contains(filter.LotName)) : bySaleStatus;
 
+            var categories = !string.IsNullOrEmpty(filter.Categories) ?
+                filter.Categories.Trim().Split(",") : Array.Empty<string>();
+            var byCategories = categories.Any() ? byName.Where(lot => categories.Contains(lot.Category.Name)) : byName;
+
             var byMinPrice = filter.MinPrice != default ?
-                byName.Where(lot => lot.StartPrice > filter.MinPrice) : byName;
+                byCategories.Where(lot => lot.StartPrice >= filter.MinPrice) : byCategories;
 
             var byMaxPrice = filter.MaxPrice != default ? 
-                byMinPrice.Where(lot => lot.StartPrice < filter.MaxPrice) : byMinPrice;
+                byMinPrice.Where(lot => lot.StartPrice <= filter.MaxPrice) : byMinPrice;
 
             var sorted = filter.SortBy switch
             {
