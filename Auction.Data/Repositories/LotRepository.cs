@@ -122,6 +122,7 @@ namespace Auction.Data.Repositories
             await context.Lots
                 .Include(lot => lot.BiddingDetails)
                 .ThenInclude(bd => bd.Bids)
+                .ThenInclude(b => b.Bidder)
                 .Include(lot => lot.Category)
                 .Include(lot => lot.Status)
                 .Include(lot => lot.Seller)
