@@ -8,6 +8,7 @@ using Ardalis.Result;
 using AutoMapper;
 using System;
 using Auction.BusinessModels.Models;
+using System.Linq;
 
 namespace Auction.Business.Services
 {
@@ -21,7 +22,7 @@ namespace Auction.Business.Services
 
             if (details == null) return Result.NotFound();
 
-            if (!CanPlaceBid(details, price)) return Result.Error();
+            if (!CanPlaceBid(details, price, bidder)) return Result.Error();
 
             var bid = new Bid
             {
@@ -30,6 +31,8 @@ namespace Auction.Business.Services
                 BiddingDetailsId = details.Id,
                 PlacedOn = DateTime.UtcNow
             };
+
+            details.CurrentBid = price;
 
             await uof.BidRepository.AddAsync(bid, ct);
             await uof.SaveAsync(ct);
@@ -48,8 +51,11 @@ namespace Auction.Business.Services
             return Result.Success(mapped);
         }
 
-        private bool CanPlaceBid(BiddingDetails details, decimal price)
+        private bool CanPlaceBid(BiddingDetails details, decimal price, int bidder)
         {
+            var lastBid = details.Bids.OrderByDescending(x => x.PlacedOn).FirstOrDefault();
+            if (lastBid != null && lastBid.BidderId == bidder) return false;
+
             if (details.Lot.CloseDate < DateTime.UtcNow) return false;
 
             if (details.Sold) return false;

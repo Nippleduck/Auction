@@ -11,6 +11,5 @@ namespace Auction.BusinessModels.Models
         public DateTime CloseDate { get; set; }
         public decimal StartPrice { get; set; }
         public decimal CurrentBid { get; set; }
-        public int BidsCount { get; set; }
     }
 }

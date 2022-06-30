@@ -29,8 +29,8 @@ namespace Auction.Data.Repositories
 
         public async Task<BiddingDetails> GetByLotIdAsync(int lotId, CancellationToken ct = default) =>
             await context.BiddingDetails
-            .AsNoTracking()
             .Include(bd => bd.Lot)
+            .Include(bd => bd.Bids)
             .FirstOrDefaultAsync(bd => bd.LotId == lotId, ct);
     }
 }
