@@ -91,7 +91,8 @@ namespace Auction.Business.Services
                 CategoryId = model.CategoryId,
                 StatusId = model.StatusId,
                 Image = image,
-                ReviewDetails = new ReviewDetails()
+                ReviewDetails = new ReviewDetails(),
+                BiddingDetails = new BiddingDetails(),
             };
 
             await uof.LotRepository.AddAsync(lot, ct);
