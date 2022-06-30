@@ -11,7 +11,6 @@ namespace Auction.ApiModels.Lots.Validators
             RuleFor(x => x.Description).NotEmpty();
             RuleFor(x => x.StartPrice).NotEmpty();
             RuleFor(x => x.CategoryId).NotEmpty(); 
-            RuleFor(x => x.StatusId).NotEmpty();
         }
     }
 }

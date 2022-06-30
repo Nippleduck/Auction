@@ -17,7 +17,7 @@ namespace Auction.Domain.Entities
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 
-        public int StatusId { get; set; }
+        public int? StatusId { get; set; }
         public AuctionStatus Status { get; set; }
 
         public int SellerId { get; set; }

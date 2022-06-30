@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Auction.BusinessModels.Models
 {
@@ -15,6 +16,6 @@ namespace Auction.BusinessModels.Models
         public decimal StartPrice { get; set; }
         public decimal CurrentBid { get; set; }
         public decimal MinimalBid { get; set; }
-        public int BidsCount { get; set; }
+        public IEnumerable<BidModel> Bids { get; set; }
     }
 }

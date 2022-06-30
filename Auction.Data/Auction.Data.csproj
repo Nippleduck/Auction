@@ -13,6 +13,8 @@
     <Compile Remove="Migrations\20220620092401_changeBuyerToLotRelationViaDetails.Designer.cs" />
     <Compile Remove="Migrations\20220620092609_changeBuyerToLotRelationViaDetails.cs" />
     <Compile Remove="Migrations\20220620092609_changeBuyerToLotRelationViaDetails.Designer.cs" />
+    <Compile Remove="Migrations\20220630143259_addNullableBuyer.cs" />
+    <Compile Remove="Migrations\20220630143259_addNullableBuyer.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
