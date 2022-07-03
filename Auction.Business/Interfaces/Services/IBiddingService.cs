@@ -7,7 +7,7 @@ namespace Auction.Business.Interfaces.Services
 {
     public interface IBiddingService
     {
-        Task<Result> PlaceBidAsync(int bidder, int lotId, decimal price, CancellationToken ct);
+        Task<Result<int>> PlaceBidAsync(int bidder, int lotId, decimal price, CancellationToken ct);
         Task<Result<BidModel>> GetLotHighestBidderAsync(int lotId, CancellationToken ct);
     }
 }

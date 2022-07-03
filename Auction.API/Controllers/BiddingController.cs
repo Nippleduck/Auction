@@ -22,7 +22,7 @@ namespace Auction.API.Controllers
 
         [HttpPost]
         [TranslateResultToActionResult]
-        public async Task<Result> PlaceBid([FromBody] PlaceBidRequest request, CancellationToken ct) =>
+        public async Task<Result<int>> PlaceBid([FromBody] PlaceBidRequest request, CancellationToken ct) =>
             await biddingService.PlaceBidAsync(currentUser.UserId, request.LotId, request.Price, ct);
     }
 }

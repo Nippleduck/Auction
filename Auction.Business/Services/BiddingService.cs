@@ -16,7 +16,7 @@ namespace Auction.Business.Services
     {
         public BiddingService(IMapper mapper, IUnitOfWork uof) : base(mapper, uof) { }
 
-        public async Task<Result> PlaceBidAsync(int bidder, int lotId, decimal price, CancellationToken ct)
+        public async Task<Result<int>> PlaceBidAsync(int bidder, int lotId, decimal price, CancellationToken ct)
         {
             var details = await uof.BiddingDetailsRepository.GetByLotIdAsync(lotId, ct);
 
@@ -37,7 +37,7 @@ namespace Auction.Business.Services
             await uof.BidRepository.AddAsync(bid, ct);
             await uof.SaveAsync(ct);
 
-            return Result.Success();
+            return Result.Success(bid.Id);
         }
 
         public async Task<Result<BidModel>> GetLotHighestBidderAsync(int lotId, CancellationToken ct)

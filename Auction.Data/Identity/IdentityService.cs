@@ -57,6 +57,7 @@ namespace Auction.Data.Identity
 
             var response = new AuthenticationResponse
             {
+                Id = user.PersonId,
                 Role = roles.First(),
                 Username = user.UserName,
                 AccessToken = token,
