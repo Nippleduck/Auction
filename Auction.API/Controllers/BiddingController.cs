@@ -5,6 +5,7 @@ using Auction.API.CurrentUserService;
 using Auction.ApiModels.Bidding.Requests;
 using Auction.Business.Interfaces.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,8 +21,9 @@ namespace Auction.API.Controllers
 
         private readonly IBiddingService biddingService;
 
-        [HttpPost]
+        [HttpPost("place")]
         [TranslateResultToActionResult]
+        [Authorize(Roles = "Administrator,Customer")]
         public async Task<Result<int>> PlaceBid([FromBody] PlaceBidRequest request, CancellationToken ct) =>
             await biddingService.PlaceBidAsync(currentUser.UserId, request.LotId, request.Price, ct);
     }

@@ -26,6 +26,12 @@ namespace Auction.API.Controllers
         [HttpGet]
         [Authorize(Roles = "Administrator")]
         [TranslateResultToActionResult]
+        public async Task<Result<IEnumerable<LotModel>>> GetAll(CancellationToken ct) =>
+            await reviewService.GetAllAvailableAsync(ct);
+
+        [HttpGet("reviews")]
+        [Authorize(Roles = "Administrator")]
+        [TranslateResultToActionResult]
         public async Task<Result<IEnumerable<LotModel>>> Get(CancellationToken ct) =>
             await reviewService.GetRequestedForReviewAsync(ct);
 

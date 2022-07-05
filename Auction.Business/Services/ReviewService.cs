@@ -16,6 +16,17 @@ namespace Auction.Business.Services
     {
         public ReviewService(IMapper mapper, IUnitOfWork uof) : base(mapper, uof) { }
 
+        public async Task<Result<IEnumerable<LotModel>>> GetAllAvailableAsync(CancellationToken ct)
+        {
+            var lots = await uof.LotRepository.GetAllWithDetailsAsync(ct);
+
+            if (lots == null || !lots.Any()) return Result.NotFound();
+
+            var mapped = mapper.Map<IEnumerable<LotModel>>(lots);
+
+            return Result.Success(mapped);
+        }
+
         public async Task<Result<IEnumerable<LotModel>>> GetRequestedForReviewAsync(CancellationToken ct)
         {
             var details = await uof.LotRepository.GetRequestedForReviewAsync(ct);
