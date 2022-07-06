@@ -11,6 +11,7 @@ using System.Threading;
 using Ardalis.Result.AspNetCore;
 using Ardalis.Result;
 using AutoMapper;
+using Auction.Data.QueryFilters;
 
 namespace Auction.API.Controllers
 {
@@ -26,8 +27,9 @@ namespace Auction.API.Controllers
         [HttpGet]
         [Authorize(Roles = "Administrator")]
         [TranslateResultToActionResult]
-        public async Task<Result<IEnumerable<LotModel>>> GetAll(CancellationToken ct) =>
-            await reviewService.GetAllAvailableAsync(ct);
+        public async Task<Result<IEnumerable<LotDetailedModel>>> GetAll(CancellationToken ct, [FromQuery]AdminLotQueryFilter filter = null) =>
+            filter == null ? await reviewService.GetAllAvailableAsync(ct) 
+            : await reviewService.GetByAdminFilterAsync(filter, ct);
 
         [HttpGet("reviews")]
         [Authorize(Roles = "Administrator")]

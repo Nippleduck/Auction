@@ -6,9 +6,11 @@ using Auction.Data.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
-using System.Linq;
 using Ardalis.Result;
 using AutoMapper;
+using Auction.Data.QueryFilters;
+using Auction.Business.Utility;
+using Auction.Domain.Entities;
 
 namespace Auction.Business.Services
 {
@@ -16,26 +18,25 @@ namespace Auction.Business.Services
     {
         public ReviewService(IMapper mapper, IUnitOfWork uof) : base(mapper, uof) { }
 
-        public async Task<Result<IEnumerable<LotModel>>> GetAllAvailableAsync(CancellationToken ct)
+        public async Task<Result<IEnumerable<LotDetailedModel>>> GetAllAvailableAsync(CancellationToken ct)
         {
             var lots = await uof.LotRepository.GetAllWithDetailsAsync(ct);
 
-            if (lots == null || !lots.Any()) return Result.NotFound();
+            return lots.ToMappedCollectionResult<Lot, LotDetailedModel>(mapper);
+        }
 
-            var mapped = mapper.Map<IEnumerable<LotModel>>(lots);
+        public async Task<Result<IEnumerable<LotDetailedModel>>> GetByAdminFilterAsync(AdminLotQueryFilter filter, CancellationToken ct)
+        {
+            var lots = await uof.LotRepository.GetByAdminQueryFiltrerAsync(filter, ct);
 
-            return Result.Success(mapped);
+            return lots.ToMappedCollectionResult<Lot, LotDetailedModel>(mapper);
         }
 
         public async Task<Result<IEnumerable<LotModel>>> GetRequestedForReviewAsync(CancellationToken ct)
         {
             var details = await uof.LotRepository.GetRequestedForReviewAsync(ct);
 
-            if (details == null || !details.Any()) return Result.NotFound();
-
-            var mapped = mapper.Map<IEnumerable<LotModel>>(details);
-
-            return Result.Success(mapped);
+            return details.ToMappedCollectionResult<Lot, LotModel>(mapper);
         }  
 
         public async Task<Result> ApproveAsync(ReviewApprovalModel model, CancellationToken ct)

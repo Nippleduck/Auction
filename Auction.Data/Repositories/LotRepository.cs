@@ -17,7 +17,7 @@ namespace Auction.Data.Repositories
         public LotRepository(AuctionContext context) : base(context) { }
 
         public async Task<Lot> GetByNameAsync(string name, CancellationToken ct = default) =>
-            await context.Lots  
+            await context.Lots
                 .Include(lot => lot.Category)
                 .Include(lot => lot.Status)
                 .FirstOrDefaultAsync(lot => lot.Name == name, ct);
@@ -103,7 +103,7 @@ namespace Auction.Data.Repositories
             var byMinPrice = filter.MinPrice != default ?
                 byCategories.Where(lot => lot.StartPrice >= filter.MinPrice) : byCategories;
 
-            var byMaxPrice = filter.MaxPrice != default ? 
+            var byMaxPrice = filter.MaxPrice != default ?
                 byMinPrice.Where(lot => lot.StartPrice <= filter.MaxPrice) : byMinPrice;
 
             var sorted = filter.SortBy switch
@@ -116,6 +116,44 @@ namespace Auction.Data.Repositories
             };
 
             return await sorted.ToListAsync(ct);
+        }
+
+        private const string Pending = "pending";
+        private const string Completed = "complete";
+
+        public async Task<IEnumerable<Lot>> GetByAdminQueryFiltrerAsync(AdminLotQueryFilter filter, CancellationToken ct = default)
+        {
+            var included = context.Lots
+                .AsNoTracking()
+                .Include(lot => lot.BiddingDetails)
+                .ThenInclude(bd => bd.Bids)
+                .ThenInclude(b => b.Bidder)
+                .Include(lot => lot.Category)
+                .Include(lot => lot.Status)
+                .Include(lot => lot.Seller)
+                .Include(lot => lot.ReviewDetails);
+
+            var byStatus = filter.Status switch
+            {
+                Pending => included.Where(l => l.ReviewDetails.Status == ReviewStatus.PendingReview),
+                Completed => included.Where(l => l.CloseDate < DateTime.Now &&
+                l.BiddingDetails.BidsCount > 0 && l.BiddingDetails.Buyer == null),
+                _ => included
+            };
+
+            var byName = !string.IsNullOrWhiteSpace(filter.Name) ?
+                byStatus.Where(lot => lot.Name.Contains(filter.Name)) : byStatus;
+
+            var categories = !string.IsNullOrEmpty(filter.Categories) ?
+                filter.Categories.Trim().Split(",") : Array.Empty<string>();
+            var byCategories = categories.Any() ? byName.Where(lot => categories.Contains(lot.Category.Name)) : byName;
+
+            var sellers = !string.IsNullOrEmpty(filter.Sellers) ?
+                filter.Sellers.Trim().Split(",").Select(s => s.Replace(" ", "")) : Array.Empty<string>();
+            var bySellers = sellers.Any() ? byCategories.Where(lot =>
+                sellers.Contains(lot.Seller.Name + lot.Seller.Surname)) : byCategories;
+
+            return await bySellers.ToListAsync();
         }
 
         public override async Task<Lot> GetByIdWithDetailsAsync(int id, CancellationToken ct = default) =>
@@ -140,5 +178,6 @@ namespace Auction.Data.Repositories
                 .Include(lot => lot.Seller)
                 .Include(lot => lot.ReviewDetails)
                 .ToListAsync(ct);
+
     }
 }
