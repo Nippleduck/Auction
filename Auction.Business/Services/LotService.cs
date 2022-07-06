@@ -12,6 +12,7 @@ using System.Linq;
 using AutoMapper;
 using Auction.BusinessModels.Models;
 using Auction.Data.QueryFilters;
+using Auction.Business.Utility;
 
 namespace Auction.Business.Services
 {
@@ -26,33 +27,21 @@ namespace Auction.Business.Services
         {
             var lotInfo = await uof.LotRepository.GetByIdWithDetailsAsync(id, ct);
 
-            if (lotInfo == null) return Result.NotFound();
-
-            var mapped = mapper.Map<LotModel>(lotInfo);
-            
-            return Result.Success(mapped);
+            return lotInfo.ToMappedResult<Lot, LotModel>(mapper);
         }
 
         public async Task<Result<IEnumerable<SaleLotModel>>> GetForSaleAsync(CancellationToken ct)
         {
             var lots = await uof.LotRepository.GetAllAvailableForSaleAsync(ct);
 
-            if (lots == null || !lots.Any()) return Result.NotFound();
-
-            var mapped = mapper.Map<IEnumerable<SaleLotModel>>(lots);
-
-            return Result.Success(mapped);
+            return lots.ToMappedCollectionResult<Lot, SaleLotModel>(mapper);
         }
 
         public async Task<Result<IEnumerable<SaleLotModel>>> GetForSaleByFilterAsync(LotQueryFilter filter, CancellationToken ct)
         {
             var lots = await uof.LotRepository.GetByQueryFilterAsync(filter, ct);
 
-            if (lots == null || !lots.Any()) return Result.NotFound();
-
-            var mapped = mapper.Map<IEnumerable<SaleLotModel>>(lots);
-
-            return Result.Success(mapped);
+            return lots.ToMappedCollectionResult<Lot, SaleLotModel>(mapper);
         }
 
         public async Task<Result<IEnumerable<SaleLotModel>>> GetCategoryMostPopularLotsWithLimitAsync
@@ -60,11 +49,7 @@ namespace Auction.Business.Services
         {
             var mostPopular = await uof.LotRepository.GetMostPupularByCategoryWithLimitAsync(categoryId, limit, ct);
 
-            if (mostPopular == null || !mostPopular.Any()) return Result.NotFound();
-
-            var mapped = mapper.Map<IEnumerable<SaleLotModel>>(mostPopular);
-
-            return Result.Success(mapped);
+            return mostPopular.ToMappedCollectionResult<Lot, SaleLotModel>(mapper);
         }
 
         public async Task<Result<int>> CreateNewLotAsync(int sellerId, NewLotModel model, CancellationToken ct)

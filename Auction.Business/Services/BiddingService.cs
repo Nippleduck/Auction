@@ -9,6 +9,7 @@ using AutoMapper;
 using System;
 using Auction.BusinessModels.Models;
 using System.Linq;
+using Auction.Business.Utility;
 
 namespace Auction.Business.Services
 {
@@ -44,11 +45,7 @@ namespace Auction.Business.Services
         {
             var bid = await uof.BidRepository.GetHighestBidderAsync(lotId, ct);
 
-            if (bid == null) return Result.NotFound();
-
-            var mapped = mapper.Map<BidModel>(bid);
-
-            return Result.Success(mapped);
+            return bid.ToMappedResult<Bid, BidModel>(mapper);
         }
 
         private bool CanPlaceBid(BiddingDetails details, decimal price, int bidder)
