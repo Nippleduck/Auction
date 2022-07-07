@@ -49,6 +49,8 @@ namespace Auction.Business.Services
             lot.CloseDate = model.CloseDate;
             lot.StatusId = model.StatusId;
 
+            lot.BiddingDetails.MinimalBid = model.MinimalBid;
+
             lot.ReviewDetails.Status = ReviewStatus.Allowed;
             lot.ReviewDetails.Feedback = model.Feedback;
 
