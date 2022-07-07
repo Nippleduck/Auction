@@ -17,5 +17,7 @@ namespace Auction.Business.Interfaces.Services
         Task<Result<int>> CreateNewLotAsync(int sellerId, NewLotModel model, CancellationToken ct);
         Task<Result> DeleteLotAsync(int id, CancellationToken ct);
         Task<Result> UpdateLotAsync(LotModel model, CancellationToken ct);
+        Task<Result> BeginAuctionAsync(int id, CancellationToken ct);
+        Task<Result> CloseAuctionAsync(int id, CancellationToken ct);
     }
 }

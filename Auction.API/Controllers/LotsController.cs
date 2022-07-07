@@ -3,6 +3,7 @@ using Auction.BusinessModels.Models;
 using Auction.ApiModels.Lots.Requests;
 using Auction.API.CurrentUserService;
 using Auction.API.Controllers.Base;
+using Auction.Data.QueryFilters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -11,7 +12,6 @@ using System.Threading.Tasks;
 using Ardalis.Result.AspNetCore;
 using Ardalis.Result;
 using AutoMapper;
-using Auction.Data.QueryFilters;
 
 namespace Auction.API.Controllers
 {
@@ -48,5 +48,15 @@ namespace Auction.API.Controllers
         [TranslateResultToActionResult]
         [Authorize(Roles = "Customer,Administrator")]
         public async Task<Result> Update(LotModel model, CancellationToken ct) => await lotService.UpdateLotAsync(model, ct);
+
+        [HttpPut("{id}/begin")]
+        [TranslateResultToActionResult]
+        [Authorize(Roles = "Administrator")]
+        public async Task<Result> BeginAuction(int id, CancellationToken ct) => await lotService.BeginAuctionAsync(id, ct);
+
+        [HttpPut("{id}/close")]
+        [TranslateResultToActionResult]
+        [Authorize(Roles = "Administrator")]
+        public async Task<Result> CloseAuction(int id, CancellationToken ct) => await lotService.CloseAuctionAsync(id, ct);
     }
 }

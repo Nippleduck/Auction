@@ -13,6 +13,7 @@ using AutoMapper;
 using Auction.BusinessModels.Models;
 using Auction.Data.QueryFilters;
 using Auction.Business.Utility;
+using System;
 
 namespace Auction.Business.Services
 {
@@ -100,6 +101,38 @@ namespace Auction.Business.Services
         public async Task<Result> UpdateLotAsync(LotModel model, CancellationToken ct)
         {
             var lot = mapper.Map<Lot>(model);
+
+            uof.LotRepository.Update(lot);
+            await uof.SaveAsync();
+
+            return Result.Success();
+        }
+
+        public async Task<Result> BeginAuctionAsync(int id, CancellationToken ct)
+        {
+            var lot = await uof.LotRepository.GetByIdWithDetailsAsync(id, ct);
+
+            if (lot == null) return Result.NotFound();
+
+            if (lot.BiddingDetails.Sold || lot.OpenDate < DateTime.Now) return Result.Error();
+
+            lot.OpenDate = DateTime.Now;
+
+            uof.LotRepository.Update(lot);
+            await uof.SaveAsync();
+
+            return Result.Success();
+        }
+
+        public async Task<Result> CloseAuctionAsync(int id, CancellationToken ct)
+        {
+            var lot = await uof.LotRepository.GetByIdWithDetailsAsync(id, ct);
+
+            if (lot == null) return Result.NotFound();
+
+            if (lot.OpenDate > DateTime.Now || lot.CloseDate < DateTime.Now) return Result.Error();
+
+            lot.CloseDate = DateTime.Now;
 
             uof.LotRepository.Update(lot);
             await uof.SaveAsync();
