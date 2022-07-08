@@ -12,7 +12,7 @@ namespace Auction.Business.Interfaces.Services
         Task<Result<IEnumerable<LotDetailedModel>>> GetAllAvailableAsync(CancellationToken ct);
         Task<Result<IEnumerable<LotDetailedModel>>> GetByAdminFilterAsync(AdminLotQueryFilter filter, CancellationToken ct);
         Task<Result<IEnumerable<LotModel>>> GetRequestedForReviewAsync(CancellationToken ct);
-        Task<Result> ApproveAsync(ReviewApprovalModel model, CancellationToken ct);
+        Task<Result> ApproveAsync(int lotId, ReviewApprovalModel model, CancellationToken ct);
         Task<Result> RejectAsync(int lotId, string feedback, CancellationToken ct);
     }
 }

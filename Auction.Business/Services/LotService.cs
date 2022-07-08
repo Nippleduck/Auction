@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using Ardalis.Result;
-using System.Linq;
 using AutoMapper;
 using Auction.BusinessModels.Models;
 using Auction.Data.QueryFilters;
@@ -108,7 +107,7 @@ namespace Auction.Business.Services
             return Result.Success();
         }
 
-        public async Task<Result> BeginAuctionAsync(int id, CancellationToken ct)
+        public async Task<Result<DateTime>> BeginAuctionAsync(int id, CancellationToken ct)
         {
             var lot = await uof.LotRepository.GetByIdWithDetailsAsync(id, ct);
 
@@ -121,10 +120,10 @@ namespace Auction.Business.Services
             uof.LotRepository.Update(lot);
             await uof.SaveAsync();
 
-            return Result.Success();
+            return Result.Success(lot.OpenDate);
         }
 
-        public async Task<Result> CloseAuctionAsync(int id, CancellationToken ct)
+        public async Task<Result<DateTime>> CloseAuctionAsync(int id, CancellationToken ct)
         {
             var lot = await uof.LotRepository.GetByIdWithDetailsAsync(id, ct);
 
@@ -135,9 +134,39 @@ namespace Auction.Business.Services
             lot.CloseDate = DateTime.Now;
 
             uof.LotRepository.Update(lot);
-            await uof.SaveAsync();
+            await uof.SaveAsync(ct);
+
+            return Result.Success(lot.CloseDate);
+        }
+
+        public async Task<Result> UpdateDetailsAsync(int id, DetailsUpdateModel model, CancellationToken ct)
+        {
+            var lot = await uof.LotRepository.GetByIdAsync(id, ct);
+
+            if (lot == null) return Result.NotFound();
+
+            lot.Name = model.Title;
+            lot.Description = model.Description;
+            lot.CategoryId = model.CategoryId;
+
+            uof.LotRepository.Update(lot);
+            await uof.SaveAsync(ct);
 
             return Result.Success();
+        }
+
+        public async Task<Result<IEnumerable<CategoryModel>>> GetCategoriesAsync(CancellationToken ct)
+        {
+            var categories = await uof.CategoryRepository.GetAllAsync(ct);
+
+            return categories.ToMappedCollectionResult<Category, CategoryModel>(mapper);
+        }
+
+        public async Task<Result<IEnumerable<StatusModel>>> GetStatusesAsync(CancellationToken ct)
+        {
+            var statuses = await uof.AuctionStatusRepository.GetAllAsync(ct);
+
+            return statuses.ToMappedCollectionResult<AuctionStatus, StatusModel>(mapper);
         }
     }
 }

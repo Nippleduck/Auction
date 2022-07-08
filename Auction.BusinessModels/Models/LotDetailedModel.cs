@@ -16,6 +16,7 @@ namespace Auction.BusinessModels.Models
         public decimal StartPrice { get; set; }
         public decimal CurrentBid { get; set; }
         public decimal MinimalBid { get; set; }
+        public bool Sold { get; set; }
         public IEnumerable<BidModel> Bids { get; set; }
         public string ReviewStatus { get; set; }
         public string Feedback { get; set; }

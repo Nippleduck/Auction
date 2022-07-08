@@ -37,16 +37,16 @@ namespace Auction.API.Controllers
         public async Task<Result<IEnumerable<LotModel>>> Get(CancellationToken ct) =>
             await reviewService.GetRequestedForReviewAsync(ct);
 
-        [HttpPut("approve")]
+        [HttpPut("{id}/approve")]
         [Authorize(Roles = "Administrator")]
         [TranslateResultToActionResult]
-        public async Task<Result> Approve([FromBody]ApprovePlacementRequest request, CancellationToken ct) =>
-            await reviewService.ApproveAsync(mapper.Map<ReviewApprovalModel>(request), ct);
+        public async Task<Result> Approve(int id, [FromBody]ApprovePlacementRequest request, CancellationToken ct) =>
+            await reviewService.ApproveAsync(id, mapper.Map<ReviewApprovalModel>(request), ct);
 
-        [HttpPut("reject")]
+        [HttpPut("{id}/reject")]
         [Authorize(Roles = "Administrator")]
         [TranslateResultToActionResult]
-        public async Task<Result> Reject([FromBody]int lotId, string feedback, CancellationToken ct) =>
-            await reviewService.RejectAsync(lotId, feedback, ct);
+        public async Task<Result> Reject(int id, [FromBody]string feedback, CancellationToken ct) =>
+            await reviewService.RejectAsync(id, feedback, ct);
     }
 }

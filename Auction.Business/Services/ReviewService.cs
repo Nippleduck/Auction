@@ -39,9 +39,9 @@ namespace Auction.Business.Services
             return details.ToMappedCollectionResult<Lot, LotModel>(mapper);
         }  
 
-        public async Task<Result> ApproveAsync(ReviewApprovalModel model, CancellationToken ct)
+        public async Task<Result> ApproveAsync(int lotId, ReviewApprovalModel model, CancellationToken ct)
         {
-            var lot = await uof.LotRepository.GetByIdWithDetailsAsync(model.LotId, ct);
+            var lot = await uof.LotRepository.GetByIdWithDetailsAsync(lotId, ct);
 
             if (lot == null) return Result.NotFound();
 

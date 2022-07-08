@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Ardalis.Result.AspNetCore;
 using Ardalis.Result;
 using AutoMapper;
+using System;
 
 namespace Auction.API.Controllers
 {
@@ -52,11 +53,27 @@ namespace Auction.API.Controllers
         [HttpPut("{id}/begin")]
         [TranslateResultToActionResult]
         [Authorize(Roles = "Administrator")]
-        public async Task<Result> BeginAuction(int id, CancellationToken ct) => await lotService.BeginAuctionAsync(id, ct);
+        public async Task<Result<DateTime>> BeginAuction(int id, CancellationToken ct) => await lotService.BeginAuctionAsync(id, ct);
 
         [HttpPut("{id}/close")]
         [TranslateResultToActionResult]
         [Authorize(Roles = "Administrator")]
-        public async Task<Result> CloseAuction(int id, CancellationToken ct) => await lotService.CloseAuctionAsync(id, ct);
+        public async Task<Result<DateTime>> CloseAuction(int id, CancellationToken ct) => await lotService.CloseAuctionAsync(id, ct);
+
+        [HttpPut("{id}/details")]
+        [TranslateResultToActionResult]
+        [Authorize(Roles = "Customer,Administrator")]
+        public async Task<Result> UpdateDetails(int id, [FromBody] UpdateLotDetailsRequest request, CancellationToken ct) =>
+            await lotService.UpdateDetailsAsync(id, mapper.Map<DetailsUpdateModel>(request), ct);
+
+        [HttpGet("categories")]
+        [TranslateResultToActionResult]
+        public async Task<Result<IEnumerable<CategoryModel>>> GetCategories(CancellationToken ct) =>
+            await lotService.GetCategoriesAsync(ct);
+
+        [HttpGet("statuses")]
+        [TranslateResultToActionResult]
+        public async Task<Result<IEnumerable<StatusModel>>> GetStatuses(CancellationToken ct) =>
+            await lotService.GetStatusesAsync(ct);
     }
 }

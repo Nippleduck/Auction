@@ -90,8 +90,8 @@ namespace Auction.Data.Repositories
                 .Include(lot => lot.BiddingDetails)
                 .Where(lot => lot.ReviewDetails.Status == ReviewStatus.Allowed);
 
-            var bySaleStatus = filter.ForSale ? included.Where(lot => DateTime.UtcNow < lot.CloseDate) :
-                included.Where(lot => DateTime.UtcNow > lot.CloseDate);
+            var bySaleStatus = filter.ForSale ? included.Where(lot => DateTime.Now < lot.CloseDate) :
+                included.Where(lot => DateTime.Now > lot.CloseDate);
 
             var byName = !string.IsNullOrWhiteSpace(filter.LotName) ?
                 bySaleStatus.Where(lot => lot.Name.Contains(filter.LotName)) : bySaleStatus;
@@ -137,7 +137,7 @@ namespace Auction.Data.Repositories
             {
                 Pending => included.Where(l => l.ReviewDetails.Status == ReviewStatus.PendingReview),
                 Completed => included.Where(l => l.CloseDate < DateTime.Now &&
-                l.BiddingDetails.BidsCount > 0 && l.BiddingDetails.Buyer == null),
+                l.BiddingDetails.Bids.Count > 0 && !l.BiddingDetails.Sold),
                 _ => included
             };
 

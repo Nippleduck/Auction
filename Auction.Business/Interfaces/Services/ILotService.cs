@@ -1,6 +1,7 @@
 ﻿using Ardalis.Result;
 using Auction.BusinessModels.Models;
 using Auction.Data.QueryFilters;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,7 +18,10 @@ namespace Auction.Business.Interfaces.Services
         Task<Result<int>> CreateNewLotAsync(int sellerId, NewLotModel model, CancellationToken ct);
         Task<Result> DeleteLotAsync(int id, CancellationToken ct);
         Task<Result> UpdateLotAsync(LotModel model, CancellationToken ct);
-        Task<Result> BeginAuctionAsync(int id, CancellationToken ct);
-        Task<Result> CloseAuctionAsync(int id, CancellationToken ct);
+        Task<Result<DateTime>> BeginAuctionAsync(int id, CancellationToken ct);
+        Task<Result<DateTime>> CloseAuctionAsync(int id, CancellationToken ct);
+        Task<Result> UpdateDetailsAsync(int id, DetailsUpdateModel model, CancellationToken ct);
+        Task<Result<IEnumerable<CategoryModel>>> GetCategoriesAsync(CancellationToken ct);
+        Task<Result<IEnumerable<StatusModel>>> GetStatusesAsync(CancellationToken ct);
     }
 }

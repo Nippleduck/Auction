@@ -30,6 +30,7 @@ namespace Auction.BusinessModels.Mappings
                 .ForMember(l => l.Bids, p => p.MapFrom(x => x.BiddingDetails.Bids))
                 .ForMember(l => l.ReviewStatus, p => p.MapFrom(x => x.ReviewDetails.Status.ToString()))
                 .ForMember(l => l.Feedback, p => p.MapFrom(x => x.ReviewDetails.Feedback))
+                .ForMember(l => l.Sold, p => p.MapFrom(x => x.BiddingDetails.Sold))
                 .ReverseMap()
                 .ForPath(l => l.Category.Name, p => p.MapFrom(x => x.Category))
                 .ForPath(l => l.Status.Name, p => p.MapFrom(x => x.Status))
@@ -40,6 +41,8 @@ namespace Auction.BusinessModels.Mappings
                 .ForMember(l => l.CurrentBid, p => p.MapFrom(x => x.BiddingDetails.CurrentBid))
                 .ForMember(l => l.Category, p => p.MapFrom(x => x.Category.Name));
 
+            CreateMap<Category, CategoryModel>();
+            CreateMap<AuctionStatus, StatusModel>();
         }
     }
 }
