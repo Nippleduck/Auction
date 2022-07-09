@@ -148,6 +148,7 @@ namespace Auction.Business.Services
             lot.Name = model.Title;
             lot.Description = model.Description;
             lot.CategoryId = model.CategoryId;
+            lot.StartPrice = model.StartPrice;
 
             uof.LotRepository.Update(lot);
             await uof.SaveAsync(ct);

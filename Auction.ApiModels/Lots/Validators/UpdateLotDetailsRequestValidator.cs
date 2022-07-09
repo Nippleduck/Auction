@@ -10,6 +10,7 @@ namespace Auction.ApiModels.Lots.Validators
             RuleFor(x => x.CategoryId).NotEmpty();
             RuleFor(x => x.Title).NotEmpty().MaximumLength(40);
             RuleFor(x => x.Description).NotEmpty().MaximumLength(300);
+            RuleFor(x => x.StartPrice).NotEmpty().LessThanOrEqualTo(500000);
         }
     }
 }
