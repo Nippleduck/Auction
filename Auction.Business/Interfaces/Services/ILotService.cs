@@ -23,5 +23,7 @@ namespace Auction.Business.Interfaces.Services
         Task<Result> UpdateDetailsAsync(int id, DetailsUpdateModel model, CancellationToken ct);
         Task<Result<IEnumerable<CategoryModel>>> GetCategoriesAsync(CancellationToken ct);
         Task<Result<IEnumerable<StatusModel>>> GetStatusesAsync(CancellationToken ct);
+        Task<Result> UpdateBiddingDetailsAsync(int id, BiddingDetailsUpdateModel model, CancellationToken ct);
+        Task<Result> UpdateStatusAsync(int lotId, int statusId, CancellationToken ct);
     }
 }

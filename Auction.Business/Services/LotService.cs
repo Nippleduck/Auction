@@ -52,6 +52,20 @@ namespace Auction.Business.Services
             return mostPopular.ToMappedCollectionResult<Lot, SaleLotModel>(mapper);
         }
 
+        public async Task<Result<IEnumerable<CategoryModel>>> GetCategoriesAsync(CancellationToken ct)
+        {
+            var categories = await uof.CategoryRepository.GetAllAsync(ct);
+
+            return categories.ToMappedCollectionResult<Category, CategoryModel>(mapper);
+        }
+
+        public async Task<Result<IEnumerable<StatusModel>>> GetStatusesAsync(CancellationToken ct)
+        {
+            var statuses = await uof.AuctionStatusRepository.GetAllAsync(ct);
+
+            return statuses.ToMappedCollectionResult<AuctionStatus, StatusModel>(mapper);
+        }
+
         public async Task<Result<int>> CreateNewLotAsync(int sellerId, NewLotModel model, CancellationToken ct)
         {
             using var stream = model.Image.Content;
@@ -87,9 +101,12 @@ namespace Auction.Business.Services
 
         public async Task<Result> DeleteLotAsync(int id, CancellationToken ct)
         {
-            var lot = await uof.LotRepository.GetByIdAsync(id, ct);
+            var lot = await uof.LotRepository.GetByIdWithDetailsAsync(id, ct);
 
             if (lot == null) return Result.NotFound();
+
+            if (lot.BiddingDetails.BidsCount > 0 && !lot.BiddingDetails.Sold) return Result.Error(
+                "Cannot remove bid if has any bidders with no resolved buyer");
 
             uof.LotRepository.Delete(lot);
             await uof.SaveAsync(ct);
@@ -148,7 +165,11 @@ namespace Auction.Business.Services
             lot.Name = model.Title;
             lot.Description = model.Description;
             lot.CategoryId = model.CategoryId;
-            lot.StartPrice = model.StartPrice;
+            
+            if (lot.OpenDate > DateTime.Now)
+            {
+                lot.StartPrice = model.StartPrice;
+            }
 
             uof.LotRepository.Update(lot);
             await uof.SaveAsync(ct);
@@ -156,18 +177,45 @@ namespace Auction.Business.Services
             return Result.Success();
         }
 
-        public async Task<Result<IEnumerable<CategoryModel>>> GetCategoriesAsync(CancellationToken ct)
+        public async Task<Result> UpdateBiddingDetailsAsync(int id, BiddingDetailsUpdateModel model, CancellationToken ct)
         {
-            var categories = await uof.CategoryRepository.GetAllAsync(ct);
+            var lot = await uof.LotRepository.GetByIdWithDetailsAsync(id, ct);
 
-            return categories.ToMappedCollectionResult<Category, CategoryModel>(mapper);
+            if (lot == null) return Result.NotFound();
+
+            var active = lot.OpenDate < DateTime.Now;
+
+            if (model.OpenDate != null && active)
+                return Result.Error("Cannot set open date if lot is active");
+
+            if (model.MinimalBid != lot.BiddingDetails.MinimalBid && active)
+                return Result.Error("Cennot change minimal bid if lot is active");
+
+            if ((model.OpenDate != null || model.CloseDate != null) && lot.BiddingDetails.Sold)
+                return Result.Error("Cannot change bidding details when lot is sold");
+
+            if (model.OpenDate != null) lot.OpenDate = (DateTime)model.OpenDate;
+            if (model.CloseDate != null) lot.CloseDate = (DateTime)model.CloseDate;
+            if (model.MinimalBid != lot.BiddingDetails.MinimalBid) lot.BiddingDetails.MinimalBid = model.MinimalBid;
+
+            uof.LotRepository.Update(lot);
+            await uof.SaveAsync();
+
+            return Result.Success();
         }
 
-        public async Task<Result<IEnumerable<StatusModel>>> GetStatusesAsync(CancellationToken ct)
+        public async Task<Result> UpdateStatusAsync(int lotId, int statusId, CancellationToken ct)
         {
-            var statuses = await uof.AuctionStatusRepository.GetAllAsync(ct);
+            var lot = await uof.LotRepository.GetByIdAsync(lotId, ct);
 
-            return statuses.ToMappedCollectionResult<AuctionStatus, StatusModel>(mapper);
+            if (lot == null) return Result.NotFound();
+
+            lot.StatusId = statusId;
+
+            uof.LotRepository.Update(lot);
+            await uof.SaveAsync(ct);
+
+            return Result.Success();
         }
     }
 }

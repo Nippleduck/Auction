@@ -20,7 +20,7 @@ namespace Auction.API.Controllers
     [ApiController]
     public class LotsController : BaseController
     {
-        public LotsController(ILotService lotService, CurrentUserAccessor currentUser, IMapper mapper) 
+        public LotsController(ILotService lotService, CurrentUserAccessor currentUser, IMapper mapper)
             : base(currentUser, mapper) => this.lotService = lotService;
 
         private readonly ILotService lotService;
@@ -28,7 +28,7 @@ namespace Auction.API.Controllers
         [HttpPost]
         [TranslateResultToActionResult]
         [Authorize(Roles = "Customer,Administrator")]
-        public async Task<Result<int>> Create([FromForm]CreateLotRequest request, CancellationToken ct) =>
+        public async Task<Result<int>> Create([FromForm] CreateLotRequest request, CancellationToken ct) =>
             await lotService.CreateNewLotAsync(currentUser.UserId, mapper.Map<NewLotModel>(request), ct);
 
         [HttpDelete("{id}")]
@@ -42,7 +42,7 @@ namespace Auction.API.Controllers
 
         [HttpGet("sale")]
         [TranslateResultToActionResult]
-        public async Task<Result<IEnumerable<SaleLotModel>>> GetForSale([FromQuery]LotQueryFilter filter, CancellationToken ct) 
+        public async Task<Result<IEnumerable<SaleLotModel>>> GetForSale([FromQuery] LotQueryFilter filter, CancellationToken ct)
             => filter == null ? await lotService.GetForSaleAsync(ct) : await lotService.GetForSaleByFilterAsync(filter, ct);
 
         [HttpPut]
@@ -65,6 +65,18 @@ namespace Auction.API.Controllers
         [Authorize(Roles = "Customer,Administrator")]
         public async Task<Result> UpdateDetails(int id, [FromBody] UpdateLotDetailsRequest request, CancellationToken ct) =>
             await lotService.UpdateDetailsAsync(id, mapper.Map<DetailsUpdateModel>(request), ct);
+
+        [HttpPut("{id}/bidding")]
+        [TranslateResultToActionResult]
+        [Authorize(Roles = "Administrator")]
+        public async Task<Result> UpdateBiddingDetails(int id, [FromBody] UpdateBiddingDetailsRequest request, CancellationToken ct) =>
+            await lotService.UpdateBiddingDetailsAsync(id, mapper.Map<BiddingDetailsUpdateModel>(request), ct);
+
+        [HttpPut("{lotId}/status/{statusId}")]
+        [TranslateResultToActionResult]
+        [Authorize(Roles = "Administrator")]
+        public async Task<Result> UpdateStatus(int lotId, int statusId, CancellationToken ct) =>
+            await lotService.UpdateStatusAsync(lotId, statusId, ct);
 
         [HttpGet("categories")]
         [TranslateResultToActionResult]
