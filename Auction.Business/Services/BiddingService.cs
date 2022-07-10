@@ -41,6 +41,25 @@ namespace Auction.Business.Services
             return Result.Success(bid.Id);
         }
 
+        public async Task<Result> ConfirmPurchaseAsync(int lotId, int buyerId, CancellationToken ct)
+        {
+            var details = await uof.BiddingDetailsRepository.GetByLotIdAsync(lotId, ct);
+
+            if (details == null) return Result.NotFound();
+
+            var highestBid = details.Bids.OrderByDescending(x => x.Price).FirstOrDefault();
+            if (highestBid == null) return Result.Error("No bids found");
+            if (highestBid.BidderId != buyerId) return Result.Error("Higest bid does not belong to buyer");
+
+            details.Sold = true;
+            details.BuyerId = buyerId;
+
+            uof.BiddingDetailsRepository.Update(details);
+            await uof.SaveAsync();
+
+            return Result.Success();
+        }
+
         public async Task<Result<BidModel>> GetLotHighestBidderAsync(int lotId, CancellationToken ct)
         {
             var bid = await uof.BidRepository.GetHighestBidderAsync(lotId, ct);

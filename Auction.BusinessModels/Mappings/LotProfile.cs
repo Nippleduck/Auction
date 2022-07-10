@@ -31,6 +31,7 @@ namespace Auction.BusinessModels.Mappings
                 .ForMember(l => l.ReviewStatus, p => p.MapFrom(x => x.ReviewDetails.Status.ToString()))
                 .ForMember(l => l.Feedback, p => p.MapFrom(x => x.ReviewDetails.Feedback))
                 .ForMember(l => l.Sold, p => p.MapFrom(x => x.BiddingDetails.Sold))
+                .ForMember(l => l.Buyer, p => p.MapFrom(x => $"{x.BiddingDetails.Buyer.Name} {x.BiddingDetails.Buyer.Surname}"))
                 .ReverseMap()
                 .ForPath(l => l.Category.Name, p => p.MapFrom(x => x.Category))
                 .ForPath(l => l.Status.Name, p => p.MapFrom(x => x.Status))

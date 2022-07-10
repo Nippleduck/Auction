@@ -23,8 +23,14 @@ namespace Auction.API.Controllers
 
         [HttpPost("place")]
         [TranslateResultToActionResult]
-        [Authorize(Roles = "Administrator,Customer")]
+        [Authorize(Roles = "Customer")]
         public async Task<Result<int>> PlaceBid([FromBody] PlaceBidRequest request, CancellationToken ct) =>
             await biddingService.PlaceBidAsync(currentUser.UserId, request.LotId, request.Price, ct);
+
+        [HttpPut("{lotId}/sold/{buyerId}")]
+        [TranslateResultToActionResult]
+        [Authorize(Roles = "Administrator")]
+        public async Task<Result> ConfirmPurchase(int lotId, int buyerId, CancellationToken ct) => 
+            await biddingService.ConfirmPurchaseAsync(lotId, buyerId, ct);
     }
 }
