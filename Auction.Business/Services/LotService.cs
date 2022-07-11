@@ -2,16 +2,17 @@
 using Auction.Business.ImageProcessing;
 using Auction.Business.Services.Base;
 using Auction.Business.Interfaces;
+using Auction.Business.Utility;
+using Auction.BusinessModels.Models;
+using Auction.Domain.Entities.Enums;
 using Auction.Domain.Entities;
+using Auction.Data.QueryFilters;
 using Auction.Data.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using Ardalis.Result;
 using AutoMapper;
-using Auction.BusinessModels.Models;
-using Auction.Data.QueryFilters;
-using Auction.Business.Utility;
 using System;
 
 namespace Auction.Business.Services
@@ -66,20 +67,11 @@ namespace Auction.Business.Services
             return statuses.ToMappedCollectionResult<AuctionStatus, StatusModel>(mapper);
         }
 
-        public async Task<Result<int>> CreateNewLotAsync(int sellerId, NewLotModel model, CancellationToken ct)
+        public async Task<Result<int>> CreateLotAsync(int sellerId, NewLotModel model, CancellationToken ct)
         {
-            using var stream = model.Image.Content;
+            if (model == null) return Result.Error("Mapped model cannot be null");
 
-            var fullSize = await imageConverter.ConvertWithResizeAsync(stream, ImageSize.FullSize);
-            var thumbnail = await imageConverter.ConvertWithResizeAsync(stream, ImageSize.Thumbnail);
-
-            var image = new LotImage
-            {
-                Name = model.Image.FileName,
-                Type = model.Image.Type,
-                FullSize = fullSize,
-                Thumbnail = thumbnail
-            };
+            var image = await CreateStoredImageAsync(model.Image);
 
             var lot = new Lot
             {
@@ -90,13 +82,58 @@ namespace Auction.Business.Services
                 CategoryId = model.CategoryId,
                 Image = image,
                 ReviewDetails = new ReviewDetails(),
-                BiddingDetails = new BiddingDetails(),
+                BiddingDetails = new BiddingDetails()
             };
 
             await uof.LotRepository.AddAsync(lot, ct);
             await uof.SaveAsync(ct);
 
             return Result.Success(lot.Id);
+        }
+
+        public async Task<Result<int>> CreateLotAsAdminAsync(int sellerId, NewAdminLotModel model, CancellationToken ct)
+        {
+            if (model == null) return Result.Error("Mapped model cannot be null");
+
+            var image = await CreateStoredImageAsync(model.Image);
+
+            var lot = new Lot
+            {
+                SellerId = sellerId,
+                Name = model.Name,
+                Description = model.Description,
+                StartPrice = model.StartPrice,
+                CategoryId = model.CategoryId,
+                StatusId = model.StatusId,
+                OpenDate = model.OpenDate,
+                CloseDate = model.CloseDate,
+                Image = image,
+                ReviewDetails = new ReviewDetails { Status = ReviewStatus.Allowed },
+                BiddingDetails = new BiddingDetails { MinimalBid = model.MinimalBid },
+            };
+
+            await uof.LotRepository.AddAsync(lot, ct);
+            await uof.SaveAsync(ct);
+
+            return Result.Success(lot.Id);
+        }
+
+        private async Task<LotImage> CreateStoredImageAsync(ImageModel imageModel)
+        {
+            using var stream = imageModel.Content;
+
+            var fullSize = await imageConverter.ConvertWithResizeAsync(stream, ImageSize.FullSize);
+            var thumbnail = await imageConverter.ConvertWithResizeAsync(stream, ImageSize.Thumbnail);
+
+            var image = new LotImage
+            {
+                Name = imageModel.FileName,
+                Type = imageModel.Type,
+                FullSize = fullSize,
+                Thumbnail = thumbnail
+            };
+
+            return image;
         }
 
         public async Task<Result> DeleteLotAsync(int id, CancellationToken ct)

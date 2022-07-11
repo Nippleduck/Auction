@@ -25,11 +25,17 @@ namespace Auction.API.Controllers
 
         private readonly ILotService lotService;
 
-        [HttpPost]
+        [HttpPost("place/customer")]
         [TranslateResultToActionResult]
-        [Authorize(Roles = "Customer,Administrator")]
+        [Authorize(Roles = "Customer")]
         public async Task<Result<int>> Create([FromForm] CreateLotRequest request, CancellationToken ct) =>
-            await lotService.CreateNewLotAsync(currentUser.UserId, mapper.Map<NewLotModel>(request), ct);
+            await lotService.CreateLotAsync(currentUser.UserId, mapper.Map<NewLotModel>(request), ct);
+
+        [HttpPost("place/admin")]
+        [TranslateResultToActionResult]
+        [Authorize(Roles = "Administrator")]
+        public async Task<Result<int>> CreateAsAdmin([FromForm] CreateAdminLotRequest request, CancellationToken ct) => 
+            await lotService.CreateLotAsAdminAsync(currentUser.UserId, mapper.Map<NewAdminLotModel>(request), ct);
 
         [HttpDelete("{id}")]
         [TranslateResultToActionResult]

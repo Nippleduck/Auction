@@ -10,7 +10,7 @@ namespace Auction.ApiModels.Lots.Validators
         {
             RuleFor(x => x.OpenDate).GreaterThanOrEqualTo(DateTime.Now - TimeSpan.FromMinutes(1));
             RuleFor(x => x.CloseDate).GreaterThanOrEqualTo(DateTime.Now);
-            RuleFor(x => x.MinimalBid).LessThanOrEqualTo(500000);
+            RuleFor(x => x.MinimalBid).LessThanOrEqualTo(10000);
         }
     }
 }
