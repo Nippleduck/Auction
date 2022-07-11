@@ -93,5 +93,17 @@ namespace Auction.API.Controllers
         [TranslateResultToActionResult]
         public async Task<Result<IEnumerable<StatusModel>>> GetStatuses(CancellationToken ct) =>
             await lotService.GetStatusesAsync(ct);
+
+        [HttpGet("customer/owned")]
+        [TranslateResultToActionResult]
+        [Authorize(Roles = "Customer")]
+        public async Task<Result<IEnumerable<UserLotSaleModel>>> GetOwnedLots(CancellationToken ct) =>
+            await lotService.GetUserOwnedLotsAsync(currentUser.UserId, ct);
+
+        [HttpGet("customer/participated")]
+        [TranslateResultToActionResult]
+        [Authorize(Roles = "Customer")]
+        public async Task<Result<IEnumerable<UserLotSaleModel>>> GetParticipatedLots(CancellationToken ct) =>
+            await lotService.GetUserParticipatedLotsAsync(currentUser.UserId, ct);
     }
 }

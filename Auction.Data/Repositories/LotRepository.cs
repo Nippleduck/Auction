@@ -75,6 +75,19 @@ namespace Auction.Data.Repositories
                 .Where(lot => lot.SellerId == userId)
                 .ToListAsync(ct);
 
+        public async Task<IEnumerable<Lot>> GetUserParticipatedLotsAsync(int userId, CancellationToken ct = default) =>
+            await context.Lots
+                .AsNoTracking()
+                .Include(lot => lot.Category)
+                .Include(lot => lot.Status)
+                .Include(lot => lot.BiddingDetails)
+                .ThenInclude(bd => bd.Bids)
+                .ThenInclude(b => b.Bidder)
+                .Include(lot => lot.ReviewDetails)
+                .Where(lot => lot.BiddingDetails.Bids.Any(b => b.BidderId == userId))
+                .ToListAsync(ct);
+                
+
         private const string ByDateAscending = "dateAsc";
         private const string ByDateDescending = "dateDesc";
         private const string ByPriceAscending = "priceAsc";

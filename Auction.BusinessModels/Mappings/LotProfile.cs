@@ -1,6 +1,7 @@
 ﻿using Auction.BusinessModels.Models;
 using Auction.Domain.Entities;
 using AutoMapper;
+using System.Linq;
 
 namespace Auction.BusinessModels.Mappings
 {
@@ -15,6 +16,7 @@ namespace Auction.BusinessModels.Mappings
                 .ForMember(l => l.CurrentBid, p => p.MapFrom(x => x.BiddingDetails.CurrentBid))
                 .ForMember(l => l.Seller, p => p.MapFrom(x => $"{x.Seller.Name} {x.Seller.Surname}"))
                 .ForMember(l => l.Bids, p => p.MapFrom(x => x.BiddingDetails.Bids))
+                .ForMember(l => l.Sold, p => p.MapFrom(x => x.BiddingDetails.Sold))
                 .ReverseMap()
                 .ForPath(l => l.Category.Name, p => p.MapFrom(x => x.Category))
                 .ForPath(l => l.Status.Name, p => p.MapFrom(x => x.Status))
@@ -41,6 +43,14 @@ namespace Auction.BusinessModels.Mappings
             CreateMap<Lot, SaleLotModel>()
                 .ForMember(l => l.CurrentBid, p => p.MapFrom(x => x.BiddingDetails.CurrentBid))
                 .ForMember(l => l.Category, p => p.MapFrom(x => x.Category.Name));
+
+            CreateMap<Lot, UserLotSaleModel>()
+                .ForMember(l => l.CurrentBid, p => p.MapFrom(x => x.BiddingDetails.CurrentBid))
+                .ForMember(l => l.Category, p => p.MapFrom(x => x.Category.Name))
+                .ForMember(l => l.Status, p => p.MapFrom(x => x.Status.Name))
+                .ForMember(l => l.Sold, p => p.MapFrom(x => x.BiddingDetails.Sold))
+                .ForMember(l => l.HighestBid, p => p.MapFrom(x => x.BiddingDetails.Bids.OrderByDescending(b => b.Price).FirstOrDefault()));
+
 
             CreateMap<Category, CategoryModel>();
             CreateMap<AuctionStatus, StatusModel>();

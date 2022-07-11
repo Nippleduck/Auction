@@ -67,6 +67,20 @@ namespace Auction.Business.Services
             return statuses.ToMappedCollectionResult<AuctionStatus, StatusModel>(mapper);
         }
 
+        public async Task<Result<IEnumerable<UserLotSaleModel>>> GetUserParticipatedLotsAsync(int userId, CancellationToken ct)
+        {
+            var lots = await uof.LotRepository.GetUserParticipatedLotsAsync(userId, ct);
+
+            return lots.ToMappedCollectionResult<Lot, UserLotSaleModel>(mapper);
+        }
+
+        public async Task<Result<IEnumerable<UserLotSaleModel>>> GetUserOwnedLotsAsync(int userId, CancellationToken ct)
+        {
+            var lots = await uof.LotRepository.GetUserSaleLotsAsync(userId, ct);
+
+            return lots.ToMappedCollectionResult<Lot, UserLotSaleModel>(mapper);
+        }
+
         public async Task<Result<int>> CreateLotAsync(int sellerId, NewLotModel model, CancellationToken ct)
         {
             if (model == null) return Result.Error("Mapped model cannot be null");
