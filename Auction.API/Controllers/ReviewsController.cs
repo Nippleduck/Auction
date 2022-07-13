@@ -48,5 +48,11 @@ namespace Auction.API.Controllers
         [TranslateResultToActionResult]
         public async Task<Result> Reject(int id, [FromBody]string feedback, CancellationToken ct) =>
             await reviewService.RejectAsync(id, feedback, ct);
+
+        [HttpPut("{id}/reapply")]
+        [Authorize(Roles = "Customer")]
+        [TranslateResultToActionResult]
+        public async Task<Result> Reapply(int id, [FromForm] ReapplyRequest request, CancellationToken ct) =>
+            await reviewService.ReapplyAsync(id, mapper.Map<ReapplyModel>(request), ct);
     }
 }

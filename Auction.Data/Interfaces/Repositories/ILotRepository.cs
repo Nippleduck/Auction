@@ -17,5 +17,6 @@ namespace Auction.Data.Interfaces.Repositories
         Task<IEnumerable<Lot>> GetUserParticipatedLotsAsync(int userId, CancellationToken ct = default);
         Task<IEnumerable<Lot>> GetByQueryFilterAsync(LotQueryFilter filter, CancellationToken ct = default);
         Task<IEnumerable<Lot>> GetByAdminQueryFiltrerAsync(AdminLotQueryFilter filter, CancellationToken ct = default);
+        Task ChangeImageAsync(int id, LotImage image, CancellationToken ct = default);
     }
 }

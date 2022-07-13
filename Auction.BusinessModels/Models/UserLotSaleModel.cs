@@ -10,6 +10,7 @@ namespace Auction.BusinessModels.Models
         public string Category { get; set; }
         public string Status { get; set; }
         public bool Sold { get; set; }
+        public string ReviewStatus { get; set; }
         public DateTime OpenDate { get; set; }
         public DateTime CloseDate { get; set; }
         public decimal StartPrice { get; set; }

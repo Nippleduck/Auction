@@ -49,7 +49,8 @@ namespace Auction.BusinessModels.Mappings
                 .ForMember(l => l.Category, p => p.MapFrom(x => x.Category.Name))
                 .ForMember(l => l.Status, p => p.MapFrom(x => x.Status.Name))
                 .ForMember(l => l.Sold, p => p.MapFrom(x => x.BiddingDetails.Sold))
-                .ForMember(l => l.HighestBid, p => p.MapFrom(x => x.BiddingDetails.Bids.OrderByDescending(b => b.Price).FirstOrDefault()));
+                .ForMember(l => l.ReviewStatus, p => p.MapFrom(x => x.ReviewDetails.Status.ToString()))
+                .ForPath(l => l.HighestBid, p => p.MapFrom(x => x.BiddingDetails.Bids.OrderByDescending(b => b.Price).FirstOrDefault()));
 
 
             CreateMap<Category, CategoryModel>();

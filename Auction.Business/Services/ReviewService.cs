@@ -11,12 +11,17 @@ using AutoMapper;
 using Auction.Data.QueryFilters;
 using Auction.Business.Utility;
 using Auction.Domain.Entities;
+using Auction.Business.Interfaces;
+using System;
 
 namespace Auction.Business.Services
 {
     public class ReviewService : BaseService, IReviewService
     {
-        public ReviewService(IMapper mapper, IUnitOfWork uof) : base(mapper, uof) { }
+        public ReviewService(IMapper mapper, IUnitOfWork uof, IImageConverter imageConverter) 
+            : base(mapper, uof) => this.imageConverter = imageConverter;
+
+        private readonly IImageConverter imageConverter;
 
         public async Task<Result<IEnumerable<LotDetailedModel>>> GetAllAvailableAsync(CancellationToken ct)
         {
@@ -71,6 +76,38 @@ namespace Auction.Business.Services
 
             uof.ReviewDetailsRepository.Update(details);
             await uof.SaveAsync(ct);
+
+            return Result.Success();
+        }
+
+        public async Task<Result> ReapplyAsync(int lotId, ReapplyModel model, CancellationToken ct) 
+        {
+            var lot = await uof.LotRepository.GetByIdWithDetailsAsync(lotId, ct);
+            
+            if (lot == null) return Result.NotFound();
+
+            if (model.Image != null)
+            {
+                var image = await model.Image.ToDbStoredImageAsync(imageConverter);
+                await uof.LotRepository.ChangeImageAsync(lotId, image, ct);
+            }
+
+            if (model.Name != null && !string.IsNullOrWhiteSpace(model.Name)) 
+                lot.Name = model.Name;
+
+            if (model.Description != null && !string.IsNullOrWhiteSpace(model.Description)) 
+                lot.Description = model.Description;
+
+            if (model.StartPrice != null && model.StartPrice != 0)
+                lot.StartPrice = model.StartPrice.Value;
+
+            if (model.CategoryId != null && model.CategoryId != 0)
+                lot.CategoryId = model.CategoryId.Value;
+
+            lot.ReviewDetails.Status = ReviewStatus.PendingReview;
+
+            uof.LotRepository.Update(lot);
+            await uof.SaveAsync();
 
             return Result.Success();
         }

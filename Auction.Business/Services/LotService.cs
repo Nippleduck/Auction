@@ -1,5 +1,4 @@
 ﻿using Auction.Business.Interfaces.Services;
-using Auction.Business.ImageProcessing;
 using Auction.Business.Services.Base;
 using Auction.Business.Interfaces;
 using Auction.Business.Utility;
@@ -85,7 +84,7 @@ namespace Auction.Business.Services
         {
             if (model == null) return Result.Error("Mapped model cannot be null");
 
-            var image = await CreateStoredImageAsync(model.Image);
+            var image = await model.Image.ToDbStoredImageAsync(imageConverter);
 
             var lot = new Lot
             {
@@ -109,7 +108,7 @@ namespace Auction.Business.Services
         {
             if (model == null) return Result.Error("Mapped model cannot be null");
 
-            var image = await CreateStoredImageAsync(model.Image);
+            var image = await model.Image.ToDbStoredImageAsync(imageConverter);
 
             var lot = new Lot
             {
@@ -130,24 +129,6 @@ namespace Auction.Business.Services
             await uof.SaveAsync(ct);
 
             return Result.Success(lot.Id);
-        }
-
-        private async Task<LotImage> CreateStoredImageAsync(ImageModel imageModel)
-        {
-            using var stream = imageModel.Content;
-
-            var fullSize = await imageConverter.ConvertWithResizeAsync(stream, ImageSize.FullSize);
-            var thumbnail = await imageConverter.ConvertWithResizeAsync(stream, ImageSize.Thumbnail);
-
-            var image = new LotImage
-            {
-                Name = imageModel.FileName,
-                Type = imageModel.Type,
-                FullSize = fullSize,
-                Thumbnail = thumbnail
-            };
-
-            return image;
         }
 
         public async Task<Result> DeleteLotAsync(int id, CancellationToken ct)

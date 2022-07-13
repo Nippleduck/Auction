@@ -1,4 +1,5 @@
 ﻿using Auction.Data.Context;
+using Auction.Data.Exceptions;
 using Auction.Data.Interfaces.Repositories;
 using Auction.Data.QueryFilters;
 using Auction.Domain.Entities;
@@ -71,6 +72,8 @@ namespace Auction.Data.Repositories
                 .Include(lot => lot.Category)
                 .Include(lot => lot.Status)
                 .Include(lot => lot.BiddingDetails)
+                .ThenInclude(bd => bd.Bids)
+                .ThenInclude(b => b.Bidder)
                 .Include(lot => lot.ReviewDetails)
                 .Where(lot => lot.SellerId == userId)
                 .ToListAsync(ct);
@@ -167,6 +170,18 @@ namespace Auction.Data.Repositories
                 sellers.Contains(lot.Seller.Name + lot.Seller.Surname)) : byCategories;
 
             return await bySellers.ToListAsync();
+        }
+
+        public async Task ChangeImageAsync(int id, LotImage image, CancellationToken ct = default)
+        {
+            var current = await context.Images.Where(i => i.LotId == id).Select(i => i.Id).FirstOrDefaultAsync(ct);
+
+            if (current == 0) throw new EntityNotFoundException("Image does not exist");
+
+            context.Images.Remove(new LotImage { Id = current});
+
+            image.LotId = id;
+            context.Entry(image).State = EntityState.Added;
         }
 
         public override async Task<Lot> GetByIdWithDetailsAsync(int id, CancellationToken ct = default) =>

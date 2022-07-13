@@ -9,6 +9,10 @@ namespace Auction.ApiModels.Reviews.Mappings
         public ReviewsProfile()
         {
             CreateMap<ApprovePlacementRequest, ReviewApprovalModel>();
+            CreateMap<ReapplyRequest, ReapplyModel>()
+                .ForPath(l => l.Image.FileName, p => p.MapFrom(x => x.Image.FileName))
+                .ForPath(l => l.Image.Type, p => p.MapFrom(x => x.Image.ContentType))
+                .ForPath(l => l.Image.Content, p => p.MapFrom(x => x.Image.OpenReadStream()));
         }
     }
 }

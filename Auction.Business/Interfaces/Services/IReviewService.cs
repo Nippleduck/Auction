@@ -14,5 +14,6 @@ namespace Auction.Business.Interfaces.Services
         Task<Result<IEnumerable<LotModel>>> GetRequestedForReviewAsync(CancellationToken ct);
         Task<Result> ApproveAsync(int lotId, ReviewApprovalModel model, CancellationToken ct);
         Task<Result> RejectAsync(int lotId, string feedback, CancellationToken ct);
+        Task<Result> ReapplyAsync(int lotId, ReapplyModel model, CancellationToken ct);
     }
 }
