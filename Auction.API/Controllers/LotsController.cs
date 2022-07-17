@@ -50,6 +50,11 @@ namespace Auction.API.Controllers
         [TranslateResultToActionResult]
         public async Task<Result<IEnumerable<SaleLotModel>>> GetForSale([FromQuery] LotQueryFilter filter, CancellationToken ct)
             => filter == null ? await lotService.GetForSaleAsync(ct) : await lotService.GetForSaleByFilterAsync(filter, ct);
+        
+        [HttpGet("popular/{limit}")]
+        [TranslateResultToActionResult]
+        public async Task<Result<IEnumerable<SaleLotModel>>> GetMostPopular(int limit, CancellationToken ct) =>
+            await lotService.GetMostPopularWithLimitAsync(limit, ct);
 
         [HttpPut]
         [TranslateResultToActionResult]

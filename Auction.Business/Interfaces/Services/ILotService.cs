@@ -14,6 +14,7 @@ namespace Auction.Business.Interfaces.Services
         Task<Result<IEnumerable<SaleLotModel>>> GetForSaleAsync(CancellationToken ct);
         Task<Result<IEnumerable<SaleLotModel>>> GetCategoryMostPopularLotsWithLimitAsync
             (int categoryId, int limit, CancellationToken ct);
+        Task<Result<IEnumerable<SaleLotModel>>> GetMostPopularWithLimitAsync(int limit, CancellationToken ct);
         Task<Result<IEnumerable<SaleLotModel>>> GetForSaleByFilterAsync(LotQueryFilter filter, CancellationToken ct);
         Task<Result<int>> CreateLotAsync(int sellerId, NewLotModel model, CancellationToken ct);
         Task<Result<int>> CreateLotAsAdminAsync(int sellerId, NewAdminLotModel model, CancellationToken ct);

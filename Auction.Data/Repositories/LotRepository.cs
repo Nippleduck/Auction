@@ -41,8 +41,23 @@ namespace Auction.Data.Repositories
                 .Include(lot => lot.Status)
                 .Include(lot => lot.ReviewDetails)
                 .Include(lot => lot.BiddingDetails)
+                .ThenInclude(lot => lot.Bids)
                 .Where(lot => lot.CategoryId == categoryId &&
                 lot.ReviewDetails.Status == ReviewStatus.Allowed && DateTime.UtcNow < lot.CloseDate)
+                .OrderByDescending(lot => lot.BiddingDetails.Bids.Count)
+                .Take(limit)
+                .ToListAsync(ct);
+
+        public async Task<IEnumerable<Lot>> GetMostPupularWithLimitAsync (int limit, CancellationToken ct = default) =>
+            await context.Lots
+                .AsNoTracking()
+                .Include(lot => lot.Category)
+                .Include(lot => lot.Status)
+                .Include(lot => lot.ReviewDetails)
+                .Include(lot => lot.BiddingDetails)
+                .ThenInclude(lot => lot.Bids)
+                .Where(lot => lot.ReviewDetails.Status == ReviewStatus.Allowed && DateTime.UtcNow < lot.CloseDate)
+                .OrderByDescending(lot => lot.BiddingDetails.Bids.Count)
                 .Take(limit)
                 .ToListAsync(ct);
 

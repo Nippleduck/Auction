@@ -80,6 +80,13 @@ namespace Auction.Business.Services
             return lots.ToMappedCollectionResult<Lot, UserLotSaleModel>(mapper);
         }
 
+        public async Task<Result<IEnumerable<SaleLotModel>>> GetMostPopularWithLimitAsync(int limit, CancellationToken ct)
+        {
+            var lots = await uof.LotRepository.GetMostPupularWithLimitAsync(limit, ct);
+
+            return lots.ToMappedCollectionResult<Lot, SaleLotModel>(mapper);
+        }
+
         public async Task<Result<int>> CreateLotAsync(int sellerId, NewLotModel model, CancellationToken ct)
         {
             if (model == null) return Result.Error("Mapped model cannot be null");
