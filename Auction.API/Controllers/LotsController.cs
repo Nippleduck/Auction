@@ -51,10 +51,10 @@ namespace Auction.API.Controllers
         public async Task<Result<IEnumerable<SaleLotModel>>> GetForSale([FromQuery] LotQueryFilter filter, CancellationToken ct)
             => filter == null ? await lotService.GetForSaleAsync(ct) : await lotService.GetForSaleByFilterAsync(filter, ct);
         
-        [HttpGet("popular/{limit}")]
+        [HttpGet("{id}/popular/{limit}")]
         [TranslateResultToActionResult]
-        public async Task<Result<IEnumerable<SaleLotModel>>> GetMostPopular(int limit, CancellationToken ct) =>
-            await lotService.GetMostPopularWithLimitAsync(limit, ct);
+        public async Task<Result<IEnumerable<SaleLotModel>>> GetMostPopular(int id, int limit, CancellationToken ct) =>
+            await lotService.GetMostPopularWithLimitAsync(id, limit, ct);
 
         [HttpPut]
         [TranslateResultToActionResult]

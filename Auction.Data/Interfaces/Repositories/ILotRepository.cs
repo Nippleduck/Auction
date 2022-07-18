@@ -11,7 +11,7 @@ namespace Auction.Data.Interfaces.Repositories
         Task<Lot> GetByNameAsync(string name, CancellationToken ct = default);
         Task<IEnumerable<Lot>> GetAllAvailableForSaleAsync(CancellationToken ct = default);
         Task<IEnumerable<Lot>> GetMostPupularByCategoryWithLimitAsync(int categoryId, int limit, CancellationToken ct = default);
-        Task<IEnumerable<Lot>> GetMostPupularWithLimitAsync(int limit, CancellationToken ct = default);
+        Task<IEnumerable<Lot>> GetMostPupularWithLimitAsync(int lotId, int limit, CancellationToken ct = default);
         Task<IEnumerable<Lot>> GetRequestedForReviewAsync(CancellationToken ct = default);
         Task<IEnumerable<Lot>> GetUserPurchasedLotsAsync(int userId, CancellationToken ct = default);
         Task<IEnumerable<Lot>> GetUserSaleLotsAsync(int userId, CancellationToken ct = default);

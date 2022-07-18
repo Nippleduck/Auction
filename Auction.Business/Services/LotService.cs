@@ -80,9 +80,9 @@ namespace Auction.Business.Services
             return lots.ToMappedCollectionResult<Lot, UserLotSaleModel>(mapper);
         }
 
-        public async Task<Result<IEnumerable<SaleLotModel>>> GetMostPopularWithLimitAsync(int limit, CancellationToken ct)
+        public async Task<Result<IEnumerable<SaleLotModel>>> GetMostPopularWithLimitAsync(int lotId, int limit, CancellationToken ct)
         {
-            var lots = await uof.LotRepository.GetMostPupularWithLimitAsync(limit, ct);
+            var lots = await uof.LotRepository.GetMostPupularWithLimitAsync(lotId, limit, ct);
 
             return lots.ToMappedCollectionResult<Lot, SaleLotModel>(mapper);
         }

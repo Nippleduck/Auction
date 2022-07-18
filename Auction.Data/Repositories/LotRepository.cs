@@ -48,7 +48,7 @@ namespace Auction.Data.Repositories
                 .Take(limit)
                 .ToListAsync(ct);
 
-        public async Task<IEnumerable<Lot>> GetMostPupularWithLimitAsync (int limit, CancellationToken ct = default) =>
+        public async Task<IEnumerable<Lot>> GetMostPupularWithLimitAsync (int lotId, int limit, CancellationToken ct = default) =>
             await context.Lots
                 .AsNoTracking()
                 .Include(lot => lot.Category)
@@ -57,6 +57,7 @@ namespace Auction.Data.Repositories
                 .Include(lot => lot.BiddingDetails)
                 .ThenInclude(lot => lot.Bids)
                 .Where(lot => lot.ReviewDetails.Status == ReviewStatus.Allowed && DateTime.UtcNow < lot.CloseDate)
+                .Where(lot => lot.Id != lotId)
                 .OrderByDescending(lot => lot.BiddingDetails.Bids.Count)
                 .Take(limit)
                 .ToListAsync(ct);
@@ -193,7 +194,7 @@ namespace Auction.Data.Repositories
 
             if (current == 0) throw new EntityNotFoundException("Image does not exist");
 
-            context.Images.Remove(new LotImage { Id = current});
+            context.Images.Remove(new LotImage { Id = current });
 
             image.LotId = id;
             context.Entry(image).State = EntityState.Added;

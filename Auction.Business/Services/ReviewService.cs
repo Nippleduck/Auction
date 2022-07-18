@@ -86,7 +86,7 @@ namespace Auction.Business.Services
             
             if (lot == null) return Result.NotFound();
 
-            if (model.Image != null)
+            if (model.Image.Content != null)
             {
                 var image = await model.Image.ToDbStoredImageAsync(imageConverter);
                 await uof.LotRepository.ChangeImageAsync(lotId, image, ct);
