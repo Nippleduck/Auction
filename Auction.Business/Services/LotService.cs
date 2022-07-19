@@ -228,7 +228,7 @@ namespace Auction.Business.Services
                 return Result.Error("Cannot set open date if lot is active");
 
             if (model.MinimalBid != lot.BiddingDetails.MinimalBid && active)
-                return Result.Error("Cennot change minimal bid if lot is active");
+                return Result.Error("Cannot change minimal bid if lot is active");
 
             if ((model.OpenDate != null || model.CloseDate != null) && lot.BiddingDetails.Sold)
                 return Result.Error("Cannot change bidding details when lot is sold");
