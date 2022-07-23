@@ -42,7 +42,9 @@ namespace Auction.BusinessModels.Mappings
 
             CreateMap<Lot, SaleLotModel>()
                 .ForMember(l => l.CurrentBid, p => p.MapFrom(x => x.BiddingDetails.CurrentBid))
-                .ForMember(l => l.Category, p => p.MapFrom(x => x.Category.Name));
+                .ForMember(l => l.Category, p => p.MapFrom(x => x.Category.Name))
+                .ForMember(l => l.Sold, p => p.MapFrom(x => x.BiddingDetails.Sold))
+                .ForMember(l => l.Bids, p => p.MapFrom(x => x.BiddingDetails.BidsCount));
 
             CreateMap<Lot, UserLotSaleModel>()
                 .ForMember(l => l.CurrentBid, p => p.MapFrom(x => x.BiddingDetails.CurrentBid))

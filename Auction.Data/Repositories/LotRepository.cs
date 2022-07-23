@@ -120,6 +120,7 @@ namespace Auction.Data.Repositories
                 .Include(lot => lot.Status)
                 .Include(lot => lot.ReviewDetails)
                 .Include(lot => lot.BiddingDetails)
+                .ThenInclude(d => d.Bids)
                 .Where(lot => lot.ReviewDetails.Status == ReviewStatus.Allowed);
 
             var bySaleStatus = filter.ForSale ? included.Where(lot => DateTime.Now < lot.CloseDate) :

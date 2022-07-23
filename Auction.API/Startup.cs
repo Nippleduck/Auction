@@ -1,8 +1,8 @@
 using Auction.Authentication.JWT.RegistrationExtensions;
 using Auction.API.CurrentUserService;
+using Auction.BusinessModels;
 using Auction.ApiModels;
 using Auction.Business;
-using Auction.Data.Context;
 using Auction.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,7 +10,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using FluentValidation.AspNetCore;
-using Auction.BusinessModels;
 
 namespace Auction.API
 {

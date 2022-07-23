@@ -26,5 +26,9 @@ namespace Auction.API.Controllers
         [HttpGet("lot/{id}/thumbnail/blob")]
         public async Task<ActionResult<byte[]>> GetThumbnailBlob(int id, CancellationToken ct) =>
             await imageService.GetThumbnailImageAsync(id, ct);
+
+        [HttpGet("lot/{id}/large/blob")]
+        public async Task<ActionResult<byte[]>> GetFullSizeBlob(int id, CancellationToken ct) =>
+            await imageService.GetFullSizeImageAsync(id, ct);
     }
 }

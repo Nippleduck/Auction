@@ -158,7 +158,7 @@ namespace Auction.Business.Services
             var lot = mapper.Map<Lot>(model);
 
             uof.LotRepository.Update(lot);
-            await uof.SaveAsync();
+            await uof.SaveAsync(ct);
 
             return Result.Success();
         }
@@ -174,7 +174,7 @@ namespace Auction.Business.Services
             lot.OpenDate = DateTime.Now;
 
             uof.LotRepository.Update(lot);
-            await uof.SaveAsync();
+            await uof.SaveAsync(ct);
 
             return Result.Success(lot.OpenDate);
         }
@@ -238,7 +238,7 @@ namespace Auction.Business.Services
             if (model.MinimalBid != lot.BiddingDetails.MinimalBid) lot.BiddingDetails.MinimalBid = model.MinimalBid;
 
             uof.LotRepository.Update(lot);
-            await uof.SaveAsync();
+            await uof.SaveAsync(ct);
 
             return Result.Success();
         }
