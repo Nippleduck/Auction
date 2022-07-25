@@ -1,4 +1,5 @@
-﻿using Auction.Data.QueryFilters;
+﻿using Auction.Data.Pagination;
+using Auction.Data.QueryFilters;
 using Auction.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading;
@@ -16,7 +17,7 @@ namespace Auction.Data.Interfaces.Repositories
         Task<IEnumerable<Lot>> GetUserPurchasedLotsAsync(int userId, CancellationToken ct = default);
         Task<IEnumerable<Lot>> GetUserSaleLotsAsync(int userId, CancellationToken ct = default);
         Task<IEnumerable<Lot>> GetUserParticipatedLotsAsync(int userId, CancellationToken ct = default);
-        Task<IEnumerable<Lot>> GetByQueryFilterAsync(LotQueryFilter filter, CancellationToken ct = default);
+        Task<PagedCollection<Lot>> GetByQueryFilterAsync(LotQueryFilter filter, CancellationToken ct = default);
         Task<IEnumerable<Lot>> GetByAdminQueryFiltrerAsync(AdminLotQueryFilter filter, CancellationToken ct = default);
         Task ChangeImageAsync(int id, LotImage image, CancellationToken ct = default);
     }

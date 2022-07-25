@@ -13,6 +13,7 @@ using System.Threading;
 using Ardalis.Result;
 using AutoMapper;
 using System;
+using Auction.Data.Pagination;
 
 namespace Auction.Business.Services
 {
@@ -37,11 +38,13 @@ namespace Auction.Business.Services
             return lots.ToMappedCollectionResult<Lot, SaleLotModel>(mapper);
         }
 
-        public async Task<Result<IEnumerable<SaleLotModel>>> GetForSaleByFilterAsync(LotQueryFilter filter, CancellationToken ct)
+        public async Task<Result<PagedCollection<SaleLotModel>>> GetForSaleByFilterAsync(LotQueryFilter filter, CancellationToken ct)
         {
             var lots = await uof.LotRepository.GetByQueryFilterAsync(filter, ct);
 
-            return lots.ToMappedCollectionResult<Lot, SaleLotModel>(mapper);
+            var paged = lots.TransformSource(collection => mapper.Map<IEnumerable<SaleLotModel>>(collection));
+
+            return Result.Success(paged);
         }
 
         public async Task<Result<IEnumerable<SaleLotModel>>> GetCategoryMostPopularLotsWithLimitAsync

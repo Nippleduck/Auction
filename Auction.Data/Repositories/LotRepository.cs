@@ -1,7 +1,9 @@
 ﻿using Auction.Data.Context;
 using Auction.Data.Exceptions;
 using Auction.Data.Interfaces.Repositories;
+using Auction.Data.Pagination;
 using Auction.Data.QueryFilters;
+using Auction.Data.QueryFilters.Extensions;
 using Auction.Domain.Entities;
 using Auction.Domain.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -105,58 +107,21 @@ namespace Auction.Data.Repositories
                 .Include(lot => lot.ReviewDetails)
                 .Where(lot => lot.BiddingDetails.Bids.Any(b => b.BidderId == userId))
                 .ToListAsync(ct);
-                
 
-        private const string ByDateAscending = "dateAsc";
-        private const string ByDateDescending = "dateDesc";
-        private const string ByPriceAscending = "priceAsc";
-        private const string ByPriceDescending = "priceDesc";
-
-        public async Task<IEnumerable<Lot>> GetByQueryFilterAsync(LotQueryFilter filter, CancellationToken ct = default)
-        {
-            var included = context.Lots
+        public async Task<PagedCollection<Lot>> GetByQueryFilterAsync(LotQueryFilter filter, CancellationToken ct = default) =>
+            await context.Lots
                 .AsNoTracking()
                 .Include(lot => lot.Category)
                 .Include(lot => lot.Status)
                 .Include(lot => lot.ReviewDetails)
                 .Include(lot => lot.BiddingDetails)
                 .ThenInclude(d => d.Bids)
-                .Where(lot => lot.ReviewDetails.Status == ReviewStatus.Allowed);
+                .Where(lot => lot.ReviewDetails.Status == ReviewStatus.Allowed)
+                .WithLotFilter(filter)
+                .ToPagedCollectionAsync(filter.PageNumber, filter.PageSize, paged => paged.ToListAsync(ct));
 
-            var bySaleStatus = filter.ForSale ? included.Where(lot => DateTime.Now < lot.CloseDate) :
-                included.Where(lot => DateTime.Now > lot.CloseDate);
-
-            var byName = !string.IsNullOrWhiteSpace(filter.LotName) ?
-                bySaleStatus.Where(lot => lot.Name.Contains(filter.LotName)) : bySaleStatus;
-
-            var categories = !string.IsNullOrEmpty(filter.Categories) ?
-                filter.Categories.Trim().Split(",") : Array.Empty<string>();
-            var byCategories = categories.Any() ? byName.Where(lot => categories.Contains(lot.Category.Name)) : byName;
-
-            var byMinPrice = filter.MinPrice != default ?
-                byCategories.Where(lot => lot.StartPrice >= filter.MinPrice) : byCategories;
-
-            var byMaxPrice = filter.MaxPrice != default ?
-                byMinPrice.Where(lot => lot.StartPrice <= filter.MaxPrice) : byMinPrice;
-
-            var sorted = filter.SortBy switch
-            {
-                ByDateAscending => byMaxPrice.OrderBy(lot => lot.CloseDate),
-                ByDateDescending => byMaxPrice.OrderByDescending(lot => lot.CloseDate),
-                ByPriceAscending => byMaxPrice.OrderBy(lot => lot.StartPrice),
-                ByPriceDescending => byMaxPrice.OrderByDescending(lot => lot.StartPrice),
-                _ => byMaxPrice
-            };
-
-            return await sorted.ToListAsync(ct);
-        }
-
-        private const string Pending = "pending";
-        private const string Completed = "complete";
-
-        public async Task<IEnumerable<Lot>> GetByAdminQueryFiltrerAsync(AdminLotQueryFilter filter, CancellationToken ct = default)
-        {
-            var included = context.Lots
+        public async Task<IEnumerable<Lot>> GetByAdminQueryFiltrerAsync(AdminLotQueryFilter filter, CancellationToken ct = default) =>
+            await context.Lots
                 .AsNoTracking()
                 .Include(lot => lot.BiddingDetails)
                 .ThenInclude(bd => bd.Bids)
@@ -164,30 +129,9 @@ namespace Auction.Data.Repositories
                 .Include(lot => lot.Category)
                 .Include(lot => lot.Status)
                 .Include(lot => lot.Seller)
-                .Include(lot => lot.ReviewDetails);
-
-            var byStatus = filter.Status switch
-            {
-                Pending => included.Where(l => l.ReviewDetails.Status == ReviewStatus.PendingReview),
-                Completed => included.Where(l => l.CloseDate < DateTime.Now &&
-                l.BiddingDetails.Bids.Count > 0 && !l.BiddingDetails.Sold),
-                _ => included
-            };
-
-            var byName = !string.IsNullOrWhiteSpace(filter.Name) ?
-                byStatus.Where(lot => lot.Name.Contains(filter.Name)) : byStatus;
-
-            var categories = !string.IsNullOrEmpty(filter.Categories) ?
-                filter.Categories.Trim().Split(",") : Array.Empty<string>();
-            var byCategories = categories.Any() ? byName.Where(lot => categories.Contains(lot.Category.Name)) : byName;
-
-            var sellers = !string.IsNullOrEmpty(filter.Sellers) ?
-                filter.Sellers.Trim().Split(",").Select(s => s.Replace(" ", "")) : Array.Empty<string>();
-            var bySellers = sellers.Any() ? byCategories.Where(lot =>
-                sellers.Contains(lot.Seller.Name + lot.Seller.Surname)) : byCategories;
-
-            return await bySellers.ToListAsync();
-        }
+                .Include(lot => lot.ReviewDetails)
+                .WithAdminLotFilter(filter)
+                .ToListAsync(ct);
 
         public async Task ChangeImageAsync(int id, LotImage image, CancellationToken ct = default)
         {

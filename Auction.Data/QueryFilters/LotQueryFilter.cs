@@ -1,6 +1,6 @@
 ﻿namespace Auction.Data.QueryFilters
 {
-    public class LotQueryFilter
+    public class LotQueryFilter : PaginatedQueryFilter
     {
         public bool ForSale { get; set; } = true;
         public string LotName { get; set; }

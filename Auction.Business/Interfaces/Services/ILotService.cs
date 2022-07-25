@@ -1,5 +1,6 @@
 ﻿using Ardalis.Result;
 using Auction.BusinessModels.Models;
+using Auction.Data.Pagination;
 using Auction.Data.QueryFilters;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Auction.Business.Interfaces.Services
         Task<Result<IEnumerable<SaleLotModel>>> GetCategoryMostPopularLotsWithLimitAsync
             (int categoryId, int limit, CancellationToken ct);
         Task<Result<IEnumerable<SaleLotModel>>> GetMostPopularWithLimitAsync(int lotId, int limit, CancellationToken ct);
-        Task<Result<IEnumerable<SaleLotModel>>> GetForSaleByFilterAsync(LotQueryFilter filter, CancellationToken ct);
+        Task<Result<PagedCollection<SaleLotModel>>> GetForSaleByFilterAsync(LotQueryFilter filter, CancellationToken ct);
         Task<Result<int>> CreateLotAsync(int sellerId, NewLotModel model, CancellationToken ct);
         Task<Result<int>> CreateLotAsAdminAsync(int sellerId, NewAdminLotModel model, CancellationToken ct);
         Task<Result> DeleteLotAsync(int id, CancellationToken ct);

@@ -13,6 +13,7 @@ using Ardalis.Result.AspNetCore;
 using Ardalis.Result;
 using AutoMapper;
 using System;
+using Auction.Data.Pagination;
 
 namespace Auction.API.Controllers
 {
@@ -48,8 +49,9 @@ namespace Auction.API.Controllers
 
         [HttpGet("sale")]
         [TranslateResultToActionResult]
-        public async Task<Result<IEnumerable<SaleLotModel>>> GetForSale([FromQuery] LotQueryFilter filter, CancellationToken ct)
-            => filter == null ? await lotService.GetForSaleAsync(ct) : await lotService.GetForSaleByFilterAsync(filter, ct);
+        public async Task<Result<PagedCollection<SaleLotModel>>> GetForSale
+            ([FromQuery] LotQueryFilter filter, CancellationToken ct) => 
+            await lotService.GetForSaleByFilterAsync(filter, ct);
         
         [HttpGet("{id}/popular/{limit}")]
         [TranslateResultToActionResult]
